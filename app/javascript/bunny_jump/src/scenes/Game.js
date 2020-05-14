@@ -1,5 +1,10 @@
-import Phaser from "../lib/phaser.js";
+import Phaser from "../lib/phaser";
 import Carrot from "../game/Carrot.js";
+import background from "../../assets/bg_layer1.png";
+import platform from "../../assets/ground_grass.png";
+import bunnyStand from "../../assets/bunny1_stand.png";
+import carrot from "../../assets/carrot.png";
+import bunnyJump from "../../assets/bunny1_jump.png";
 
 export default class Game extends Phaser.Scene {
   carrotsCollected = 0;
@@ -25,11 +30,11 @@ export default class Game extends Phaser.Scene {
     this.carrotsCollected = 0;
   }
   preload() {
-    this.load.image("background", "./assets/Background/bg_layer1.png");
-    this.load.image("platform", "./assets/Environment/ground_grass.png");
-    this.load.image("bunny-stand", "./assets/Player/bunny1_stand.png");
-    this.load.image("carrot", "./assets/Items/carrot.png");
-    this.load.image("bunny-jump", "./assets/Player/bunny1_jump.png");
+    this.load.image("background", background);
+    this.load.image("platform", platform);
+    this.load.image("bunny-stand", bunnyStand);
+    this.load.image("carrot", carrot);
+    this.load.image("bunny-jump", bunnyJump);
     this.cursors = this.input.keyboard.createCursorKeys();
   }
   create() {
