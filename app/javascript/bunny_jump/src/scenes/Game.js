@@ -38,6 +38,14 @@ export default class Game extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
   }
   create() {
+    // this.joyStick = this.plugins
+    //   .get("rexVirtualJoyStick")
+    //   .add(this, {
+    //     x: 400,
+    //     y: 300,
+    //     radius: 100,
+    //   })
+    //   .on("update", this.dumpJoyStickState, this);
     this.add.image(240, 320, "background").setScrollFactor(1, 0);
     this.platforms = this.physics.add.staticGroup();
 
@@ -156,5 +164,19 @@ export default class Game extends Phaser.Scene {
       bottomPlatform = platform;
     }
     return bottomPlatform;
+  }
+
+  dumpJoyStickState() {
+    let cursorKeys = this.joyStick.createCursorKeys();
+    let s = "Key down: ";
+    for (var name in cursorKeys) {
+      if (cursorKeys[name].isDown) {
+        s += name + " ";
+      }
+    }
+    s += "\n";
+    s += "Force: " + Math.floor(this.joyStick.force * 100) / 100 + "\n";
+    s += "Angle: " + Math.floor(this.joyStick.angle * 100) / 100 + "\n";
+    this.text.setText(s);
   }
 }

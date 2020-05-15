@@ -1,6 +1,7 @@
 import Phaser from "./src/lib/phaser";
 import Game from "./src/scenes/Game.js";
 import GameOver from "./src/scenes/GameOver.js";
+import VirtualJoystickPlugin from "phaser3-rex-plugins/plugins/virtualjoystick-plugin.js";
 
 export default new Phaser.Game({
   type: Phaser.AUTO,
@@ -13,7 +14,16 @@ export default new Phaser.Game({
       gravity: {
         y: 200,
       },
-      debug: true,
+      debug: false,
     },
+  },
+  plugins: {
+    global: [
+      {
+        key: "rexVirtualJoystick",
+        plugin: VirtualJoystickPlugin,
+        start: true,
+      },
+    ],
   },
 });
