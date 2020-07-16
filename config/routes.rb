@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   get 'main/index'
   get 'main/bunny_jump'
   get 'main/dungeon'
-  root 'main#bunny_jump', as: 'bunny_jump'
+  root 'main#index', as: 'home'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
