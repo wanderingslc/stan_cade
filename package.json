@@ -11,7 +11,9 @@
     "phaser": "^3.23.0",
     "phaser3-rex-plugins": "^1.1.14",
     "popper.js": "^1.16.1",
-    "turbolinks": "^5.2.0"
+    "ts-loader": "^8.0.1",
+    "turbolinks": "^5.2.0",
+    "typescript": "^3.9.6"
   },
   "version": "0.1.0",
   "devDependencies": {

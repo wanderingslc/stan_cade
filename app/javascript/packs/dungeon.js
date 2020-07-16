@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
-import Game from "../dungeon/src/scenes/Game";
-import Preloader from "../dungeon/src/scenes/Preloader";
-import GameUI from "../dungeon/src/scenes/GameUI";
+import Game from "../dungeon/src/scenes/Game.ts";
+import Preloader from "../dungeon/src/scenes/Preloader.ts";
+import GameUI from "../dungeon/src/scenes/GameUI.ts";
 
 export default new Phaser.Game({
     type: Phaser.AUTO,
