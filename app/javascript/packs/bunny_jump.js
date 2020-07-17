@@ -32,6 +32,7 @@ const bunnyConfig = {
     type: Phaser.AUTO,
     width: 480,
     height: 640,
+    autoCenter: true,
     scene: [Game, GameOver],
     physics: {
         default: "arcade",

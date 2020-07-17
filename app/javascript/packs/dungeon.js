@@ -22,8 +22,10 @@ import GameUI from "../dungeon/src/scenes/GameUI.ts";
 
 const dungeonConfig = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 500,
+    width: 600,
+    height: 400,
+    autoCenter: true,
+    id: "dungeon",
     physics: {
         default: "arcade",
         arcade: {
