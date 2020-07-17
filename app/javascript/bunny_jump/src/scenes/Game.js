@@ -1,4 +1,4 @@
-import Phaser from "../lib/phaser";
+import Phaser from "phaser";
 import Carrot from "../game/Carrot.js";
 import background from "../../assets/bg_layer1.png";
 import platform from "../../assets/ground_grass.png";
@@ -6,7 +6,7 @@ import bunnyStand from "../../assets/bunny1_stand.png";
 import carrot from "../../assets/carrot.png";
 import bunnyJump from "../../assets/bunny1_jump.png";
 
-export default class Game extends Phaser.Scene {
+export default class BunnyJump extends Phaser.Scene {
   carrotsCollected = 0;
   /**@type {Phaser.Physics.Arcade.Sprite} */
   player;
@@ -106,6 +106,7 @@ export default class Game extends Phaser.Scene {
     }
 
     if (this.cursors.left.isDown && !touchingDown) {
+      debugger
       this.player.setVelocityX(-200);
     } else if (this.cursors.right.isDown && !touchingDown) {
       this.player.setVelocityX(200);
