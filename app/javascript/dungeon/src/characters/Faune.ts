@@ -165,7 +165,6 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
 
     if (Phaser.Input.Keyboard.JustDown(cursors.space!)) {
       if (this.activeChest) {
-        debugger;
         const coins = this.activeChest.open();
         this._coins += coins;
 

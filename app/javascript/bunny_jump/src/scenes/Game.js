@@ -106,7 +106,6 @@ export default class BunnyJump extends Phaser.Scene {
     }
 
     if (this.cursors.left.isDown && !touchingDown) {
-      debugger
       this.player.setVelocityX(-200);
     } else if (this.cursors.right.isDown && !touchingDown) {
       this.player.setVelocityX(200);
