@@ -1,29 +1,67 @@
-<div class="jumbotron">
-  <h1 class="display-4">StanCade</h1>
-  <h3>Stan's Arcade</h3>
-</div>
-<div>
-  <h3>Info about Bunny Jump</h3>
-  <p>Bunny jump is from an <a href="https://ourcade.co/">Ourcade</a> tutorial. </p>
-</div>
-<div>
-  <h3>Info about Faune Dungeon here</h3>
-  <p>Faune dungeon is from an <a href="https://ourcade.co/">Ourcade</a> tutorial.</p>
-</div>
-<div>
-  <h4>To do list:</h4>
-  <ul>
-    <li>
-      Add controls for mobile
-    </li>
-    <li>
-      Styling, do I want to stick with bootstrap?
-    </li>
-    <li>
-      Add screen shots and descriptions of each game
-    </li>
-    <li>
-      Style game pages. Center and reduce size of the dungeon map in browser
-    </li>
-  </ul>
+<div class="container-responsive">
+  <div class="jumbotron pt-5 mt-5">
+    <div class="row pl-5 pr-5 ml-5 mr-5">
+      <div class="col-md-7">
+        <h1 class="display-4">StanCade</h1>
+      </div>
+      <div class="col-md-3">
+        <p>I'm Stan. And this is my little online arcade</p>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="mt-md-5 pt-md-5 bunny ">
+
+    <div class="row pl-5 ml-5 pr-5 mr-5">
+      <div class="col-md-2"></div>
+      <div class="col-md-6">
+        <h3><%= link_to "Bunny Jump", main_bunny_jump_path, class: " " %></h3>
+        <p>Bunny jump is from an amazing <a href="https://ourcade.co/">Ourcade</a> tutorial. This is the first game that I made
+          from their tutorials. Bunny Jump is from the e-book
+          <a href="https://ourcade.co/books/infinite-jumper-phaser3/">Infinite Jumper</a>
+          which is a free book you can get by following the link.</p>
+        <p>It's a fun little project that comes complete with all the images you need, and touches on some of basics</p>
+      </div>
+      <div class="col-md-4 pb-3 mb-3">
+        <%= image_tag("bunny_jump", class: "img-thumbnail", width: "200px", height: "400px")  %>
+      </div>
+    </div>
+
+  </div>
+  <div >
+    <div class="row mt-md-5 pt-md-5  dungeon ">
+      <div class="col-md-4 pl-5 ml-5 pb-3 mb-3">
+        <%= image_tag("faune", class: "img-thumbnail", width: "400px", height: "400px") %>
+      </div>
+      <div class="col-md-6">
+        <h3><%= link_to "Faune Dungeon Crawler", main_dungeon_path %></h3>
+        <p>A fun little dungeon crawler staring Faune, from <a href="https://ourcade.co/">Ourcade</a>.
+          This tutorial is a video one on YouTube, instead of an ebook. It's split up into multiple videos and touches on using
+          images from multiple open source libraries, building maps with <a href="https://www.mapeditor.org/">Tiled</a> map
+          editor, chests, lizard monsters, and the knife throwing hero, Faune.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div>
+    <h4>To do list:</h4>
+    <ul>
+      <li>
+        Add controls for mobile
+      </li>
+      <li>
+        Styling, do I want to stick with bootstrap?
+      </li>
+      <li>
+        Add screen shots and descriptions of each game
+      </li>
+      <li>
+        Style game pages. Center and reduce size of the dungeon map in browser
+      </li>
+    </ul>
+  </div>
 </div>
