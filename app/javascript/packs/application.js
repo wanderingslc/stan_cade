@@ -7,9 +7,10 @@ require("@rails/ujs").start();
 
 require("@rails/activestorage").start();
 require("channels");
-require("bunny_jump/main");
+
 import "bootstrap";
 import "../stylesheets/application";
+import "./bootstrap_custom.js"
 
 // document.addEventListener("turbolinks:load", () => {
 //   $('[data-toggle="tooltip"]').tooltip();
