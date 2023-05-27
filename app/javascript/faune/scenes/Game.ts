@@ -31,7 +31,7 @@ export default class Game extends Phaser.Scene {
         const map = this.make.tilemap({ key: "dungeon" });
         const tileSet = map.addTilesetImage("dungeon", "tiles", 16, 16, 1, 2);
         // @ts-ignore
-        map.createStaticLayer("Floor", tileSet);
+        map.createLayer("Floor", tileSet);
 
         this.knives = this.physics.add.group({
             classType: Phaser.Physics.Arcade.Image,
@@ -39,7 +39,7 @@ export default class Game extends Phaser.Scene {
         });
 
         // @ts-ignore
-        const wallsLayer = map.createStaticLayer("Walls", tileSet);
+        const wallsLayer = map.createLayer("Walls", tileSet);
         wallsLayer.setCollisionByProperty({ collides: true });
         const chests = this.physics.add.staticGroup({
             classType: Chest,
