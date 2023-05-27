@@ -1,7 +1,8 @@
 import "phaser";
 
-import Game from "./faune/scenes/Game";
+
 import Preloader from "./faune/scenes/Preloader";
+import Game from "./faune/scenes/Game";
 import GameUI from "./faune/scenes/GameUI";
 
 
