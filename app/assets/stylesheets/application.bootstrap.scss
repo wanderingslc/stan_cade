@@ -1,2 +1,23 @@
+//$white: #ffffff;
+//
+//$theme-colors: (
+//        "light":      #d1d5e2,
+//        "dark":       #141034,
+//        "primary":    #25375e,
+//        "secondary":  #8056de,
+//        "info":       #d12899,
+//        "success":    #179758,
+//        "warning":    #dec71a,
+//        "danger":     #eb1a0b,
+//);
+//
+
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+
+body {
+  background-color: #f2f3f6;
+  color: #00002d;
+  font-family: 'Merriweather';
+}
