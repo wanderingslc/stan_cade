@@ -27,3 +27,6 @@ export class StarfallGame extends Phaser.Game {
 window.onload = () => {
     let game = new StarfallGame(config);
 }
+// $(document).on("turbolinks:load", () => {
+//     let game = new StarfallGame(config);
+// });
