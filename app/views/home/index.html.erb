@@ -2,16 +2,65 @@
 <hr>
 <p>I'm in the middle of upgrading everything up to Rails 7</p>
 <hr>
-<p>More coming soon!</p>
+
 <p></p>
-<div class="card">
-  <h5>Faune</h5>
-  <%= image_tag("home_page/faune", width: 400, height: 300) %>
+<div class=" mb-3">
+  <div class="row ">
+    <div class="col ">
+      <%= image_tag("home_page/faune", width: 400, height: 300) %>
+    </div>
+    <div class="col">
+      <h5><%= link_to "Faune", games_faune_path %></h5>
+      <p>A fun little dungeon crawler staring Faune, from <a href="https://ourcade.co/">Ourcade</a>.
+        This tutorial is a video one on YouTube, instead of an ebook. It's split up into multiple videos and touches on using
+        images from multiple open source libraries, building maps with <a href="https://www.mapeditor.org/">Tiled</a> map
+        editor, chests, lizard monsters, and the knife throwing hero, Faune.
+    </div>
+    <div class="col">
+      <h5>Main Characters</h5>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-  <h5>Bunny Jump</h5>
-  <%= image_tag("home_page/bunny_jump.png", size: 300) %>
+<div class="mb-3">
+  <div class="row">
+    <div class="col">
+      <h5>Main Characters</h5>
+
+    </div>
+    <div class="col">
+      <%= image_tag("home_page/bunny_jump.png", size: 300) %>
+    </div>
+    <div class="col">
+      <h5><%= link_to "Bunny Jump", games_rabbit_jump_path  %></h5>
+      <p>Bunny jump is from an amazing <a href="https://ourcade.co/">Ourcade</a> tutorial. This is the first game that I made
+        from their tutorials. Bunny Jump is from the e-book
+        <a href="https://ourcade.co/books/infinite-jumper-phaser3/">Infinite Jumper</a>
+        which is a free book you can get by following the link.</p>
+      <p>It's a fun little project that comes complete with all the images you need, and touches on some of basics.</p>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <div class="row">
+    <div class="col">
+      <h5><%= link_to "Starfall", games_starfall_path %></h5>
+      <p>Starfall is a fun little game where you catch falling stars with your mouse. Or your finger. It's from a tutorial
+      written on
+        <a href="https://medium.com/free-code-camp/how-to-build-a-simple-game-in-the-browser-with-phaser-3-and-typescript-bdc94719135">Medium</a>
+        that's a great introduction to Phaser 3. I followed most of it, with the obvious exception of using Ruby on Rails to host the project
+        instead of Node.js
+        </p>
+    </div>
+    <div class="col">
+
+      <h5>Main Characters</h5>
+    </div>
+    <div class="col">
+      <%= image_tag("home_page/starfall.png", size: 300) %>
+    </div>
+  </div>
 </div>
 
 <br>
