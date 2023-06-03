@@ -3,17 +3,18 @@
 <p>I'm in the middle of upgrading everything up to Rails 7</p>
 <hr>
 
-<p></p>
 <div class=" mb-3">
   <div class="row ">
     <div class="col ">
-      <%= image_tag("home_page/faune", width: 400, height: 300) %>
+      <%= image_tag("home_page/faune", width: 400, height: 300, style: "box-shadow: 10px 10px 5px grey;" ) %>
     </div>
     <div class="col">
       <h5><%= link_to "Faune", games_faune_path %></h5>
       <p>A fun little dungeon crawler staring Faune, from <a href="https://ourcade.co/">Ourcade</a>.
-        This tutorial is a video one on YouTube, instead of an ebook. It's split up into multiple videos and touches on using
-        images from multiple open source libraries, building maps with <a href="https://www.mapeditor.org/">Tiled</a> map
+        This tutorial is a video one on YouTube, instead of an ebook. It's split up into multiple videos and touches on
+        using
+        images from multiple open source libraries, building maps with <a href="https://www.mapeditor.org/">Tiled</a>
+        map
         editor, chests, lizard monsters, and the knife throwing hero, Faune.
     </div>
     <div class="col">
@@ -29,7 +30,7 @@
       </div>
 
 
-<br>
+      <br>
       <h7>Lizard</h7>
       <br>
       <div class="row justify-content-start">
@@ -39,25 +40,35 @@
         <div class="col-9">
           <p>He's green, he's confused, and his hugs take your heart away. Literally. One at a time. </p>
         </div>
-
       </div>
-
     </div>
   </div>
 </div>
-
+<hr>
 <div class="mb-3">
   <div class="row">
     <div class="col">
       <h5>Main Characters</h5>
-
+      <h7>Bun Bun</h7>
+      <div class="row justify-content-start">
+        <div class="col-4">
+          <%= image_tag("bunny_jump/bunny1_stand.png") %>
+        </div>
+        <div class="col-8">
+          <p>Our hero, Bun Bun, is a bunny who loves to jump. He's a little bit of a show off, and he's always looking
+            for
+            a
+            challenge. </p>
+        </div>
+      </div>
     </div>
     <div class="col">
-      <%= image_tag("home_page/bunny_jump.png", size: 300) %>
+      <%= image_tag("home_page/bunny_jump.png", size: 300, style: "box-shadow: 10px 10px 5px lightblue;") %>
     </div>
     <div class="col">
-      <h5><%= link_to "Bunny Jump", games_rabbit_jump_path  %></h5>
-      <p>Bunny jump is from an amazing <a href="https://ourcade.co/">Ourcade</a> tutorial. This is the first game that I made
+      <h5><%= link_to "Bunny Jump", games_rabbit_jump_path %></h5>
+      <p>Bunny jump is from an amazing <a href="https://ourcade.co/">Ourcade</a> tutorial. This is the first game that I
+        made
         from their tutorials. Bunny Jump is from the e-book
         <a href="https://ourcade.co/books/infinite-jumper-phaser3/">Infinite Jumper</a>
         which is a free book you can get by following the link.</p>
@@ -65,24 +76,35 @@
     </div>
   </div>
 </div>
-
+<hr>
 <div class="mb-3">
   <div class="row">
     <div class="col">
       <h5><%= link_to "Starfall", games_starfall_path %></h5>
-      <p>Starfall is a fun little game where you catch falling stars with your mouse. Or your finger. It's from a tutorial
-      written on
+      <p>Starfall is a fun little game where you catch falling stars with your mouse. Or your finger. It's from a
+        tutorial
+        written on
         <a href="https://medium.com/free-code-camp/how-to-build-a-simple-game-in-the-browser-with-phaser-3-and-typescript-bdc94719135">Medium</a>
-        that's a great introduction to Phaser 3. I followed most of it, with the obvious exception of using Ruby on Rails to host the project
+        that's a great introduction to Phaser 3. I followed most of it, with the obvious exception of using Ruby on
+        Rails to host the project
         instead of Node.js
-        </p>
+      </p>
     </div>
     <div class="col">
 
       <h5>Main Characters</h5>
+      <h7>Star</h7>
+      <div class="row">
+        <div class="col-3">
+          <%= image_tag("home_page/star.png", size: 70) %>
+        </div>
+        <div class="col-9">
+          <p>Our hero, the star, is a star. Who like just falling aimlessly to the ground. </p>
+        </div>
+      </div>
     </div>
     <div class="col">
-      <%= image_tag("home_page/starfall.png", size: 300) %>
+      <%= image_tag("home_page/starfall.png", size: 300, style: "box-shadow: 10px 10px 5px blue;") %>
     </div>
   </div>
 </div>
