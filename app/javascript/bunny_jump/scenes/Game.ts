@@ -163,16 +163,16 @@ export default class BunnyJump extends Phaser.Scene {
     }
 
     dumpJoyStickState() {
-        let cursorKeys = this.joyStick.createCursorKeys();
-        let s = "Key down: ";
-        for (var name in cursorKeys) {
-            if (cursorKeys[name].isDown) {
-                s += name + " ";
-            }
-        }
-        s += "\n";
-        s += "Force: " + Math.floor(this.joyStick.force * 100) / 100 + "\n";
-        s += "Angle: " + Math.floor(this.joyStick.angle * 100) / 100 + "\n";
-        this.text.setText(s);
+        // let cursorKeys = this.joyStick.createCursorKeys();
+        // let s = "Key down: ";
+        // for (var name in cursorKeys) {
+        //     if (cursorKeys[name].isDown) {
+        //         s += name + " ";
+        //     }
+        // }
+        // s += "\n";
+        // s += "Force: " + Math.floor(this.joyStick.force * 100) / 100 + "\n";
+        // s += "Angle: " + Math.floor(this.joyStick.angle * 100) / 100 + "\n";
+        // this.text.setText(s);
     }
 }
