@@ -54,5 +54,6 @@ export class BunnyJump extends Phaser.Game {
 }
 
 window.onload = () => {
+    // @ts-ignore
     let game = new BunnyJump(bunnyConfig);
 }

@@ -1,4 +1,4 @@
-<h1>StanCade</h1>
+<h1>Stancade</h1>
 <hr>
 <p>I'm in the middle of upgrading everything up to Rails 7</p>
 <hr>
@@ -6,41 +6,49 @@
 <div class=" mb-3">
   <div class="row ">
     <div class="col-lg col-md-12 mb-2 ">
-      <%= image_tag("home_page/faune", width: 400, height: 300, style: "box-shadow: 10px 10px 5px grey;" ) %>
+      <%= image_tag("home_page/faune", width: 350, height: 250, style: "box-shadow: 10px 10px 5px grey;" ) %>
     </div>
     <div class="col-lg col-md-6 col-sm-12 mb-2">
-      <h5><%= link_to "Faune", games_faune_path %></h5>
-      <p>A fun little dungeon crawler staring Faune, from <a href="https://ourcade.co/">Ourcade</a>.
-        This tutorial is a video one on YouTube, instead of an ebook. It's split up into multiple videos and touches on
-        using
-        images from multiple open source libraries, building maps with <a href="https://www.mapeditor.org/">Tiled</a>
-        map
-        editor, chests, lizard monsters, and the knife throwing hero, Faune.
-    </div>
-    <div class="col-lg col-md-6 col-sm-12 mb-2">
-      <h5>Main Characters</h5>
-      <h7>Faune</h7>
-      <div class="row justify-content-start">
-        <div class="col-3">
-          <%= image_tag("home_page/faune_upclose.png", size: 70) %>
-        </div>
-        <div class="col-9">
-          <p>Our knife throwing, horned helmet wearing dungeon explorer</p>
+      <div class="card">
+        <div class="card-body">
+          <h5><%= link_to "Faune", games_faune_path %></h5>
+          <p>A fun little dungeon crawler staring Faune, from <a href="https://ourcade.co/">Ourcade</a>.
+            This tutorial is a video one on YouTube, instead of an ebook. It's split up into multiple videos and touches on
+            using
+            images from multiple open source libraries, building maps with <a href="https://www.mapeditor.org/">Tiled</a>
+            map
+            editor, chests, lizard monsters, and the knife throwing hero, Faune.</p>
         </div>
       </div>
 
-
-      <br>
-      <h7>Lizard</h7>
-      <br>
-      <div class="row justify-content-start">
-        <div class="col-3">
-          <%= image_tag("home_page/lizard.png", size: 70) %>
-        </div>
-        <div class="col-9">
-          <p>He's green, he's confused, and his hugs take your heart away. Literally. One at a time. </p>
+    </div>
+    <div class="col-lg col-md-6 col-sm-12 mb-2">
+      <div class="card">
+        <div class="card-body">
+          <h5>Main Characters</h5>
+          <h7>Faune</h7>
+          <div class="row justify-content-start">
+            <div class="col-3">
+              <%= image_tag("home_page/faune_upclose.png", size: 70) %>
+            </div>
+            <div class="col-9">
+              <p>Our knife throwing, horned helmet wearing dungeon explorer</p>
+            </div>
+            <h7>Lizard</h7>
+            <br>
+            <div class="row justify-content-start">
+              <div class="col-3">
+                <%= image_tag("home_page/lizard.png", size: 70) %>
+              </div>
+              <div class="col-9">
+                <p>He's green, not photogenic, and his hugs take your heart away. Literally. One at a time. </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <br>
+
     </div>
   </div>
 </div>
@@ -48,22 +56,27 @@
 <div class="mb-3">
   <div class="row">
     <div class="col-lg col-md-12 mb-2">
-      <h5>Main Characters</h5>
-      <h7>Bun Bun</h7>
-      <div class="row justify-content-start">
-        <div class="col-4">
-          <%= image_tag("bunny_jump/bunny1_stand.png") %>
-        </div>
-        <div class="col-8">
-          <p>Our hero, Bun Bun, is a bunny who loves to jump. He's a little bit of a show off, and he's always looking
-            for
-            a
-            challenge. </p>
+      <div class="card">
+        <div class="card-body">
+          <h5>Main Character</h5>
+          <h7>Bun Bun</h7>
+          <div class="row justify-content-start">
+            <div class="col-4">
+              <%= image_tag("bunny_jump/bunny1_stand.png") %>
+            </div>
+            <div class="col-8">
+              <p>Our hero, Bun Bun, is a bunny who loves to jump. He's a little bit of a show off, and he's always looking
+                for
+                a
+                challenge. </p>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
     <div class="col-lg col-md-12 mb-2">
-      <%= image_tag("home_page/bunny_jump.png", size: 300, style: "box-shadow: 10px 10px 5px lightblue;") %>
+      <%= image_tag("home_page/bunny_jump.png", size: 300, style: "box-shadow: 10px 10px 5px grey;") %>
     </div>
     <div class="col-lg col-md-12 mb-2">
       <h5><%= link_to "Bunny Jump", games_rabbit_jump_path %></h5>
@@ -91,20 +104,24 @@
       </p>
     </div>
     <div class="col-lg col-md-12 mb-2">
-
-      <h5>Main Characters</h5>
-      <h7>Star</h7>
-      <div class="row">
-        <div class="col-3">
-          <%= image_tag("home_page/star.png", size: 70) %>
-        </div>
-        <div class="col-9">
-          <p>Our hero, the star, is a star. Who like just falling aimlessly to the ground. </p>
+      <div class="card">
+        <div class="card-body">
+          <h5>Main Character</h5>
+          <h7>Star</h7>
+          <div class="row">
+            <div class="col-3">
+              <%= image_tag("home_page/star.png", size: 70) %>
+            </div>
+            <div class="col-9">
+              <p>Our hero, the star, is a star. Who like just falling aimlessly to the ground. </p>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
     <div class="col-lg col-md-12 mb-2">
-      <%= image_tag("home_page/starfall.png", size: 300, style: "box-shadow: 10px 10px 5px blue;") %>
+      <%= image_tag("home_page/starfall.png", size: 300, style: "box-shadow: 10px 10px 5px grey;") %>
     </div>
   </div>
 </div>
