@@ -3,7 +3,7 @@
 <p>I'm in the middle of upgrading everything up to Rails 7</p>
 <hr>
 
-<div class=" mb-3">
+<div class=" mb-3" >
   <div class="row ">
     <div class="col-lg col-md-12 mb-2 ">
       <%= image_tag("home_page/faune.png", width: 350, height: 250, style: "box-shadow: 10px 10px 5px grey;" ) %>
@@ -11,7 +11,7 @@
     <div class="col-lg col-md-6 col-sm-12 mb-2">
       <div class="card">
         <div class="card-body">
-          <h5><%= link_to "Faune", games_faune_path %></h5>
+          <h5><%= link_to "Faune", games_faune_path, data: {turbo: false} %></h5>
           <p>A fun little dungeon crawler staring Faune, from <a href="https://ourcade.co/">Ourcade</a>.
             This tutorial is a video one on YouTube, instead of an ebook. It's split up into multiple videos and touches on
             using
@@ -79,7 +79,7 @@
       <%= image_tag("home_page/bunny_jump.png", size: 300, style: "box-shadow: 10px 10px 5px grey;") %>
     </div>
     <div class="col-lg col-md-12 mb-2">
-      <h5><%= link_to "Bunny Jump", games_rabbit_jump_path %></h5>
+      <h5><%= link_to "Bunny Jump", games_rabbit_jump_path, data: {turbo: false} %></h5>
       <p>Bunny jump is from an amazing <a href="https://ourcade.co/">Ourcade</a> tutorial. This is the first game that I
         made
         from their tutorials. Bunny Jump is from the e-book
@@ -93,7 +93,7 @@
 <div class="mb-3">
   <div class="row">
     <div class="col-lg col-md-12 mb-2">
-      <h5><%= link_to "Starfall", games_starfall_path %></h5>
+      <h5><%= link_to "Starfall", games_starfall_path, data: {turbo: false} %></h5>
       <p>Starfall is a fun little game where you catch falling stars with your mouse. Or your finger. It's from a
         tutorial
         written on
