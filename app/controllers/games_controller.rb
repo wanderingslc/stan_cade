@@ -10,4 +10,8 @@ class GamesController < ApplicationController
 
   def starfall
   end
+
+  def sork
+
+  end
 end

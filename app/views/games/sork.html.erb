@@ -1,0 +1,15 @@
+<h1 class="mt-3">Sork, Stan's version of Zork</h1>
+
+<div data-controller="text-adventure">
+  <div data-text-adventure-target="output">
+
+  </div>
+  <form data-action-adventure-target="form" data-action="submit->text-adventure#submit">
+    <input
+    data-text-adventure-target="input"
+    type="text"
+    placeholder="Enter a command"
+    autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+</div>
