@@ -10,9 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_04_023050) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_15_011802) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "actions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "items", force: :cascade do |t|
     t.string "name", null: false
@@ -24,6 +29,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_023050) do
     t.json "properties", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "picked_up", default: false
     t.index ["name"], name: "index_items_on_name"
     t.index ["room_id"], name: "index_items_on_room_id"
     t.index ["state"], name: "index_items_on_state"

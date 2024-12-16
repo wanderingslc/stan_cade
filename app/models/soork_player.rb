@@ -39,6 +39,10 @@ class SoorkPlayer < ApplicationRecord
 
   before_save :update_last_played
 
+  def find_item_by_name(name)
+    items.find_by("lower(name) = ?", name)
+  end
+
   def visit_room(room)
     visit = room_visits.find_or_initialize_by(room: room)
     visit.visit_count = visit.visit_count.to_i + 1
@@ -51,8 +55,16 @@ class SoorkPlayer < ApplicationRecord
     room_visits.find_by(room: room)&.visit_count || 0
   end
 
+  def use_item(item)
+    player_item = player_items.find_by(item: item)
+    return false if player_item.nil?
+    return false if player_item.uses_remaining.to_i <= 0
+    player_item.update(uses_remaining: player_item.uses_remaining - 1)
+  end
+
   def pick_up_item(item)
     return false unless item.can_be_picked_up?
+    return false if has_item?(item)
     player_items.create(
       item: item,
       uses_remaining: item.default_uses,
@@ -78,9 +90,6 @@ class SoorkPlayer < ApplicationRecord
     game_state_flags[key.to_s]
   end
 
-  def items
-    Item.where(id: inventory_items)
-  end
 
   private
 
