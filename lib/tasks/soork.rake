@@ -18,10 +18,9 @@ namespace :soork do
         exit
       end
 
-      selected_soork_id = all_soorks.find { |soork| soork.id == soork_id.to_i }
+      if  all_soorks.any? {|soork| soork.id == soork_id.to_i}
 
-      if selected_soork_id
-        soork = Soork.find(selected_soork_id)
+        soork = Soork.find(soork_id)
         continue = true
       else
         print "Invalid Soork ID. Please try again, or type q to quit \n"

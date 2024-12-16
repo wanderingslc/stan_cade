@@ -132,13 +132,19 @@ class SoorkCli
 
   def use_items(player_string, room_string)
     player_item = player.find_item_by_name(player_string)
-    room_item = Room.by_name( room_string)
+    room_item = @current_room.by_name( room_string)
     if player_item.nil?
       puts "You don't have that item"
     elsif room_item.nil?
       puts "That item isn't here"
     else
-      player_item.use(room_item)
+      if player_item.properties["unlocks"] == room_item.name
+        print "You win!"
+        exit
+      else
+        print "You lose!"
+        exit
+      end
     end
 
   end

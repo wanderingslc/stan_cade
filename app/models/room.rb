@@ -34,7 +34,6 @@ class Room < ApplicationRecord
 
   scope :start_rooms, -> {where(start_room: true)}
   scope :by_position, -> {order(:y, :x)}
-  scope :by_name, -> (name) { joins(:items).where("lower(name) ilike ?", "%#{name.downcase}%") }
 
   aasm column: 'state' do
     state :locked, initial: true
@@ -69,6 +68,10 @@ class Room < ApplicationRecord
   def description_for_visit(first_visit = false)
     return first_visit_text if first_visit && first_visit_text.present?
     description
+  end
+
+  def by_name(name)
+    items.where("lower(name) = ?", name.downcase).first
   end
 
   def use_item(item)

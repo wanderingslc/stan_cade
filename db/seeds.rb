@@ -50,7 +50,7 @@ Item.create!(
   name: "Brass Key",
   description: "An ornate brass key with intricate engravings.",
   examine_text: "The key looks very old, but well-crafted. Strange symbols are carved into its surface.",
-  properties: { unlocks: "antique lockbox" }
+  properties: { unlocks: "Ancient Lockbox" }
 )
 
 Item.create!(
