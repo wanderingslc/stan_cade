@@ -1,15 +1,23 @@
-<h1 class="mt-3">Sork, Stan's version of Zork</h1>
-
-<div data-controller="text-adventure">
-  <div data-text-adventure-target="output">
-
+<h1 class="mt-3">Soork, Stan's version of Zork</h1>
+<div data-controller="text-adventure" class="terminal-container">
+  <div class="terminal-window">
+    <div class="terminal-header">
+      <div class="terminal-title">Soork Terminal</div>
+    </div>
+    <div class="terminal-body">
+      <div class="terminal-output" data-text-adventure-target="output"></div>
+      <div class="terminal-input-line">
+        <span class="terminal-prompt" data-text-adventure-target="prompt">></span>
+        <input 
+          type="text"
+          class="terminal-input"
+          data-text-adventure-target="input"
+          data-action="keydown->text-adventure#handleCommand"
+        autofocus
+        autocomplete="off"
+        spellcheck="false"
+        >
+      </div>
+    </div>
   </div>
-  <form data-action-adventure-target="form" data-action="submit->text-adventure#submit">
-    <input
-    data-text-adventure-target="input"
-    type="text"
-    placeholder="Enter a command"
-    autocomplete="off">
-    <button type="submit">Send</button>
-  </form>
 </div>

@@ -9,6 +9,12 @@ Rails.application.routes.draw do
   get 'games/sork'
 
   root "home#index"
+
+  resources :soorks do 
+    member do
+      post :process_command
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
