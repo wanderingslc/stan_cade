@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: player_items
+#
+#  id                 :integer          not null, primary key
+#  soork_player_id    :integer          not null
+#  item_id            :integer          not null
+#  uses_remaining     :integer
+#  current_durability :integer
+#  equipped           :boolean
+#  acquired_at        :datetime
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
+
 class PlayerItem < ApplicationRecord
   belongs_to :soork_player
   belongs_to :item

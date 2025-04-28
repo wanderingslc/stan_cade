@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   root "home#index"
 
   resources :soorks do 
+    get '/start', to: "soorks#start", as: :start
     member do
       post :process_command
     end

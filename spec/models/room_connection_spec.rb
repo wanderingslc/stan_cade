@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: room_connections
+#
+#  id             :integer          not null, primary key
+#  source_room_id :integer          not null
+#  target_room_id :integer          not null
+#  direction      :string           not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+
 # spec/models/room_connection_spec.rb
 require 'rails_helper'
 

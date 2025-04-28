@@ -10,13 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_15_011802) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_27_220702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "actions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "game_session_items", force: :cascade do |t|
+    t.bigint "game_session_id", null: false
+    t.bigint "item_id", null: false
+    t.integer "uses_remaining"
+    t.integer "current_durability"
+    t.boolean "equipped"
+    t.datetime "acquired_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_session_id"], name: "index_game_session_items_on_game_session_id"
+    t.index ["item_id"], name: "index_game_session_items_on_item_id"
+  end
+
+  create_table "game_sessions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "soork_id", null: false
+    t.bigint "current_room_id", null: false
+    t.jsonb "game_state_flags", default: {}
+    t.jsonb "items", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["current_room_id"], name: "index_game_sessions_on_current_room_id"
+    t.index ["soork_id"], name: "index_game_sessions_on_soork_id"
+    t.index ["user_id"], name: "index_game_sessions_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -128,6 +154,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_15_011802) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "game_session_items", "game_sessions"
+  add_foreign_key "game_session_items", "items"
+  add_foreign_key "game_sessions", "rooms", column: "current_room_id"
+  add_foreign_key "game_sessions", "soorks"
+  add_foreign_key "game_sessions", "users"
   add_foreign_key "items", "rooms"
   add_foreign_key "player_items", "items"
   add_foreign_key "player_items", "soork_players"
