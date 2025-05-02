@@ -1,0 +1,4 @@
+Find out why look is returning the first room when you move to the second room
+
+Have home page show current game_sessions
+
