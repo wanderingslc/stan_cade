@@ -5,14 +5,15 @@ class ProcessCommandDispatcher
   end
 
   def process_command
-    binding.pry
+    
     case @command
     when 'look'
       LookPlayerService.new(@game_session).call
     when /^take/
       TakeItemService.new(@game_session, @command).call
+    when /^go (north|south|east|west)$/
+      GoGameSessionService.new(@game_session, @command).call
     else 
-      # Handle other commands here
       puts "Command not recognized."
     end
   end 

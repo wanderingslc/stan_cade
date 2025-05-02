@@ -30,6 +30,7 @@ export default class extends Controller {
     if (e.key === "Enter") {
       e.preventDefault();
       const command = this.inputTarget.value.trim().toLowerCase();
+
       if (command === "help") {
         this.showHelp();
       } else if (command === "list") {
@@ -52,10 +53,10 @@ export default class extends Controller {
         }
       } else if (command) {
         this.history.push(command);
+        this.processCommand(command);
       }
       this.addToOutput(`> ${command}`, "command");
 
-      this.processCommand(command);
       this.inputTarget.value = "";
     }
   }
@@ -83,6 +84,9 @@ export default class extends Controller {
     );
     this.addToOutput(data.current_room.description, "response");
 
+    if (data.result.message) {
+      this.addToOutput(data.result.message, "response");
+    }
     if (data.result.exits) {
       this.addToOutput(`You see exits: ${data.result.exits}`, "response");
     }
@@ -113,7 +117,7 @@ export default class extends Controller {
       .then((data) => {
         this.addToOutput(data.description, "response");
         this.processResponse(data);
-        this.displayMessage(data.message);
+        this.displayMessage(data.result);
       })
       .catch((error) => {
         console.error("Error processing command:", error);

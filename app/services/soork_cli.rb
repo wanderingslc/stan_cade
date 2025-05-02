@@ -99,7 +99,7 @@ class SoorkCli
         item.picked_up = true
         item.state = "active"
       end
-      end
+    end
   end
 
   def available_exits

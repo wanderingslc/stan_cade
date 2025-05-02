@@ -81,6 +81,11 @@ class Room < ApplicationRecord
   def use_items(item1, item2)
 
   end
+
+  def has_item?(item)
+    items.exists?(item.id)
+  end
+
   def remove_item(item)
     items.delete(item)
   end
