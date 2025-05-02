@@ -91,11 +91,15 @@ export default class extends Controller {
       this.addToOutput(`You see exits: ${data.result.exits}`, "response");
     }
     if (data.result.items) {
-      let itemsString = "";
-      for (const item of data.result.items) {
-        itemsString += `${item.name} (${item.description}) `;
+      if (typeof data.result.items === "string") {
+        this.addToOutput(data.result.items, "response");
+      } else {
+        let itemsString = "";
+        for (const item of data.result.items) {
+          itemsString += `${item.name} (${item.description}) `;
+        }
+        this.addToOutput(`You see items: ${itemsString}`, "response");
       }
-      this.addToOutput(`You see items: ${itemsString}`, "response");
     }
     this.addToOutput("What do you want to do?", "response");
     this.addToOutput(">", "response");

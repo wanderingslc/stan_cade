@@ -21,7 +21,7 @@ class GoGameSessionService
 
     if connection
       @game_session.current_room = connection.target_room
-
+      @game_session.save
 
       {
         message: "You moved to the #{direction}.",
