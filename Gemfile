@@ -81,3 +81,5 @@ end
 gem "devise", "~> 4.9"
 
 gem "aasm", "~> 5.5"
+
+gem "solid_queue", "~> 1.1"

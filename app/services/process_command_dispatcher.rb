@@ -13,6 +13,8 @@ class ProcessCommandDispatcher
       TakeItemService.new(@game_session, @command).call
     when /^go (north|south|east|west)$/
       GoGameSessionService.new(@game_session, @command).call
+    when /^use (.+)/
+      UseItemService.new(@game_session, @command).call
     else 
       puts "Command not recognized."
     end

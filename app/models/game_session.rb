@@ -25,5 +25,20 @@ class GameSession < ApplicationRecord
     game_session_items.exists?(item: item)
   end
 
+  def get_item(item)
+    game_session_items.where("LOWER(name) ILIKE LOWER(?)", item).first
+  end
+
+  def use_item(item)
+    if has_item?(item)
+      game_session_item = game_session_items.find_by(item: item)
+      return false if game_session_item.nil?
+      return false if game_session_item.uses_remaining.to_i <= 0
+      game_session_item.update(uses_remaining: game_session_item.uses_remaining - 1)
+    else
+      false
+    end
+  end
+
   private
 end
