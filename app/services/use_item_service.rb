@@ -5,7 +5,6 @@ class UseItemService
   end
 
   def call
-    binding.pry
     item = @game_session.get_item(@command.gsub("use ", "").strip.downcase)
     if item.nil?
       {

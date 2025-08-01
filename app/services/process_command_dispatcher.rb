@@ -5,7 +5,7 @@ class ProcessCommandDispatcher
   end
 
   def process_command
-    
+  
     case @command
     when 'look'
       LookPlayerService.new(@game_session).call
@@ -15,6 +15,8 @@ class ProcessCommandDispatcher
       GoGameSessionService.new(@game_session, @command).call
     when /^use (.+)/
       UseItemService.new(@game_session, @command).call
+    when 'exit'
+      ExitGameSessionService.new(@game_session).call
     else 
       puts "Command not recognized."
     end

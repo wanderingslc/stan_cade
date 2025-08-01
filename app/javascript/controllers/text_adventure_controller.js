@@ -3,10 +3,12 @@ import { Controller } from "@hotwired/stimulus";
 // Connects to data-controller="text-adventure"
 export default class extends Controller {
   static targets = ["output", "input", "prompt"];
+  static LOCAL_COMMANDS = ["help", "list", "exit", "play"];
+
   connect() {
     this.displayWelcomeMessage();
     this.focusInput();
-    this.listSoorks();
+    this.handleList();
     this.element.addEventListener("click", () => this.focusInput());
 
     this.history = [];
@@ -29,40 +31,47 @@ export default class extends Controller {
   handleCommand(e) {
     if (e.key === "Enter") {
       e.preventDefault();
-      const command = this.inputTarget.value.trim().toLowerCase();
+      const trimmedInput = this.inputTarget.value.trim();
 
-      if (command === "help") {
-        this.showHelp();
-      } else if (command === "list") {
-        this.listSoorks();
-      } else if (command === "exit") {
-        this.addToOutput("Exiting the game. Goodbye!", "system");
-        this.inputTarget.disabled = true;
-      } else if (command.includes("play")) {
-        const soorkNumber = command.split(" ")[1];
-
-        if (soorkNumber) {
-          this.currentSoorkValue = soorkNumber;
-          this.addToOutput(`Starting Soork ${soorkNumber}...`, "system");
-          this.addToOutput("Loading the adventure...", "system");
-          this.startSoork(soorkNumber);
-          return;
-        } else {
-          this.addToOutput("Please specify a Soork number.", "error");
-          return;
-        }
-      } else if (command) {
-        this.history.push(command);
-        this.processCommand(command);
+      if (!trimmedInput) {
+        this.addToOutput("Please enter a command.", "error");
+        return;
       }
-      this.addToOutput(`> ${command}`, "command");
+
+      const [command, ...args] = trimmedInput.split(" ");
+
+      if (this.constructor.LOCAL_COMMANDS.includes(command)) {
+        this.executeCommand(command, args);
+      } else {
+        this.history.push(command);
+        this.processCommand(trimmedInput);
+      }
+
+      this.addToOutput(`> ${trimmedInput}`, "command");
 
       this.inputTarget.value = "";
     }
   }
 
-  startSoork(soorkNumber) {
-    fetch(`/soorks/${soorkNumber}/start`)
+  executeCommand(command, args) {
+    console.log("Executing local command:", command, args);
+    const methodName = `handle${this.capitalize(command)}`;
+    if (typeof this[methodName] === "function") {
+      this[methodName](args);
+    } else {
+      this.addToOutput(`Unknown command: ${command}`, "error");
+    }
+  }
+
+  handlePlay(args) {
+    if (!args) {
+      this.addToOutput("Please specify a Soork number.", "error");
+      return;
+    }
+    this.addToOutput(`Starting Soork ${args}...`, "system");
+    this.addToOutput("Loading the adventure...", "system");
+    this.currentSoorkValue = args;
+    fetch(`/soorks/${args}/start`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -106,6 +115,8 @@ export default class extends Controller {
   }
 
   processCommand(command) {
+    console.log("Processing command to server:", command);
+    console.log("Current Soork Value:", this.currentSoorkValue);
     fetch(`/soorks/${this.currentSoorkValue}/process_command`, {
       method: "POST",
       headers: {
@@ -163,7 +174,7 @@ export default class extends Controller {
     this.outputTarget.scrollTop = this.outputTarget.scrollHeight;
   }
 
-  listSoorks() {
+  handleList() {
     fetch("/soorks.json")
       .then((response) => response.json())
       .then((data) => {
@@ -182,7 +193,23 @@ export default class extends Controller {
       });
   }
 
-  showHelp() {
+  handleQuit() {
+    this.addToOutput("Quitting the game...", "system");
+    this.handleExit();
+  }
+
+  handleExit() {
+    this.addToOutput("Exiting the game...", "system");
+    // Perform any necessary cleanup or state saving
+
+    this.inputTarget.value = "";
+    this.outputTarget.innerHTML = ""; // Clear the output
+    this.currentSoorkValue = null; // Reset the current Soork value
+    this.addToOutput("Thank you for playing!", "system");
+    this.processCommand("exit");
+  }
+
+  handleHelp() {
     if (this.currentSoorkValue === null) {
       this.addToOutput("Available commands: ", "system");
       this.addToOutput("  list - Show available Soorks", "system");
@@ -203,5 +230,9 @@ export default class extends Controller {
       this.addToOutput("  help - Show this help message", "system");
       this.addToOutput("  quit/exit - Exit the game", "system");
     }
+  }
+
+  capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }
