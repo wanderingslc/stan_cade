@@ -22,4 +22,3 @@ class ProcessCommandDispatcher
     end
   end 
 end
-
