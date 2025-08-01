@@ -1,5 +1,0 @@
-class AddPickedUpToItems < ActiveRecord::Migration[8.0]
-  def change
-    add_column :items, :picked_up, :boolean, default: false
-  end
-end

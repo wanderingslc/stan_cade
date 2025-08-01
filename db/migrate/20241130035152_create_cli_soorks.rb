@@ -1,6 +1,6 @@
-class CreateSoorks < ActiveRecord::Migration[8.0]
+class CreateCliSoorks < ActiveRecord::Migration[8.0]
   def change
-    create_table :soorks do |t|
+    create_table :cli_soorks do |t|
       t.string :title, null: false
       t.text :description
       t.references :user, null: false, foreign_key: true
@@ -10,6 +10,6 @@ class CreateSoorks < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    add_index :soorks, :state
+    add_index :cli_soorks, :state
   end
 end

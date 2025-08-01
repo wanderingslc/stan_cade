@@ -1,4 +1,5 @@
-# == Schema Information
+module Cli
+  # == Schema Information
 #
 # Table name: room_visits
 #
@@ -11,10 +12,13 @@
 #  updated_at      :datetime         not null
 #
 
-class RoomVisit < ApplicationRecord
-  belongs_to :soork_player
-  belongs_to :room
+  class RoomVisit < ApplicationRecord
+    self.table_name = 'cli_room_visits'
+    
+    belongs_to :soork_player
+    belongs_to :room
 
-  validates :visit_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :last_visited_at, presence: true
+    validates :visit_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
+    validates :last_visited_at, presence: true
+  end
 end

@@ -1,4 +1,4 @@
-class CreateGameSessionItems < ActiveRecord::Migration[8.0]
+class CreateWebGameSessionItems < ActiveRecord::Migration[8.0]
   def change
     create_table :game_session_items do |t|
       t.references :game_session, null: false, foreign_key: true

@@ -1,19 +1,18 @@
 # db/seeds.rb
-
 # Create test user
 user = User.find_or_create_by!(email: "test@example.com") do |user|
   user.password = "password123"
 end
 
-# Create the Soork
-soork = Soork.create!(
+# Create the CLI Soork
+soork = Cli::Soork.create!(
   title: "The Dusty Library",
   description: "A mysterious adventure in an abandoned library",
   user: user
 )
 
 # Create rooms
-entrance = Room.create!(
+entrance = Cli::Room.create!(
   soork: soork,
   name: "Library Entrance",
   description: "You stand in a dimly lit entrance. Dust motes dance in the air. Towering bookshelves loom to the north.",
@@ -22,7 +21,7 @@ entrance = Room.create!(
   y: 0
 )
 
-main_hall = Room.create!(
+main_hall = Cli::Room.create!(
   soork: soork,
   name: "Main Reading Hall",
   description: "A grand reading hall stretches before you. Ancient tables and chairs are scattered about. A narrow corridor leads east.",
@@ -30,7 +29,7 @@ main_hall = Room.create!(
   y: 1
 )
 
-study = Room.create!(
+study = Cli::Room.create!(
   soork: soork,
   name: "Private Study",
   description: "A cozy study with a mahogany desk. A curious lockbox sits on the desk.",
@@ -39,13 +38,13 @@ study = Room.create!(
 )
 
 # Connect rooms
-RoomConnection.create!(source_room: entrance, target_room: main_hall, direction: 'north')
-RoomConnection.create!(source_room: main_hall, target_room: entrance, direction: 'south')
-RoomConnection.create!(source_room: main_hall, target_room: study, direction: 'east')
-RoomConnection.create!(source_room: study, target_room: main_hall, direction: 'west')
+Cli::RoomConnection.create!(source_room: entrance, target_room: main_hall, direction: 'north')
+Cli::RoomConnection.create!(source_room: main_hall, target_room: entrance, direction: 'south')
+Cli::RoomConnection.create!(source_room: main_hall, target_room: study, direction: 'east')
+Cli::RoomConnection.create!(source_room: study, target_room: main_hall, direction: 'west')
 
 # Create items
-Item.create!(
+Cli::Item.create!(
   room: entrance,
   name: "Brass Key",
   description: "An ornate brass key with intricate engravings.",
@@ -53,7 +52,7 @@ Item.create!(
   properties: { unlocks: "Ancient Lockbox" }
 )
 
-Item.create!(
+Cli::Item.create!(
   room: study,
   name: "Ancient Lockbox",
   description: "A mysterious wooden box with a brass lock.",
@@ -62,4 +61,4 @@ Item.create!(
   properties: { requires_key: true }
 )
 
-puts "Created Soork 'The Dusty Library' with ID: #{soork.id}"
+puts "Created CLI Soork 'The Dusty Library' with ID: #{soork.id}"
