@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_01_220426) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_191111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -128,6 +128,50 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_01_220426) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "web_area_connections", force: :cascade do |t|
+    t.bigint "source_area_id", null: false
+    t.bigint "target_area_id", null: false
+    t.string "direction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "required_item_id"
+    t.index ["direction"], name: "index_web_area_connections_on_direction"
+    t.index ["required_item_id"], name: "index_web_area_connections_on_required_item_id"
+    t.index ["source_area_id", "target_area_id"], name: "idx_on_source_area_id_target_area_id_5b5082fe53", unique: true
+    t.index ["source_area_id"], name: "index_web_area_connections_on_source_area_id"
+    t.index ["target_area_id"], name: "index_web_area_connections_on_target_area_id"
+  end
+
+  create_table "web_areas", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.text "first_visit_text"
+    t.bigint "soork_id", null: false
+    t.boolean "start_area", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["soork_id", "start_area"], name: "index_web_areas_on_soork_id_and_start_area", unique: true, where: "(start_area = true)"
+    t.index ["soork_id"], name: "index_web_areas_on_soork_id"
+  end
+
+  create_table "web_items", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.text "examine_text"
+    t.bigint "area_id", null: false
+    t.bigint "soork_id", null: false
+    t.boolean "is_pickable", default: true
+    t.integer "default_uses", default: 100
+    t.integer "default_durability", default: 100
+    t.jsonb "properties", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_web_items_on_area_id"
+    t.index ["is_pickable"], name: "index_web_items_on_is_pickable"
+    t.index ["name"], name: "index_web_items_on_name"
+    t.index ["soork_id"], name: "index_web_items_on_soork_id"
+  end
+
   create_table "web_soorks", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -154,5 +198,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_01_220426) do
   add_foreign_key "cli_soork_players", "cli_soorks"
   add_foreign_key "cli_soork_players", "users"
   add_foreign_key "cli_soorks", "users"
+  add_foreign_key "web_area_connections", "web_areas", column: "source_area_id"
+  add_foreign_key "web_area_connections", "web_areas", column: "target_area_id"
+  add_foreign_key "web_area_connections", "web_items", column: "required_item_id"
+  add_foreign_key "web_areas", "web_soorks", column: "soork_id"
+  add_foreign_key "web_items", "web_areas", column: "area_id"
+  add_foreign_key "web_items", "web_soorks", column: "soork_id"
   add_foreign_key "web_soorks", "users"
 end
