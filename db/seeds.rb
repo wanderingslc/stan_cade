@@ -62,3 +62,64 @@ Cli::Item.create!(
 )
 
 puts "Created CLI Soork 'The Dusty Library' with ID: #{soork.id}"
+
+puts "Creating Web test data..."
+
+web_soork = Web::Soork.create!(
+  title: "The Digital Library",
+  description: "A futuristic adventure in a virtual library",
+  user: user,
+  state: 'published'
+)
+
+puts "Created Web Soork 'The Digital Library' with ID: #{web_soork.id}"
+
+entrance = Web::Area.create!(
+  soork: web_soork,
+  name: "Digital Entrance",
+  description: "You stand before a shimmering portal into the digital realm. Data streams flow around you like waterfalls.",
+  start_area: true
+)
+
+main_hall = Web::Area.create!(
+  soork: web_soork,
+  name: "Central Data Hub",
+  description: "A vast chamber filled with floating data crystals. Information pulses through fiber optic pathways.", 
+)
+
+archive_room = Web::Area.create!(
+  soork: web_soork,
+  name: "Archive Vault",
+  description: "Ancient servers hum quietly. A single terminal glows in the center"
+)
+
+Web::AreaConnection.create!(source_area: entrance, target_area: main_hall, direction: 'north')
+Web::AreaConnection.create!(source_area: main_hall, target_area: entrance, direction: 'south')
+Web::AreaConnection.create!(source_area: main_hall, target_area: archive_room, direction: 'east')
+Web::AreaConnection.create!(source_area: archive_room, target_area: main_hall, direction: 'west')
+
+Web::Item.create!(
+  soork: web_soork,
+  area: entrance,
+  name: "Data Crystal",
+  description: "A glowing crystal containing encrypted data.",
+  examine_text: "The crystal pulses with blue light. Ancient code scrolls across its surface.",
+)
+
+Web::Item.create!(
+  soork: web_soork,
+  area: archive_room,
+  name: "Access Terminal",
+  description: "A sleek terminal interface",
+  examine_text: "The screen displays: 'Please insert data crystal to continue...'",
+  is_pickable: false,
+)
+
+game_session = Web::GameSession.create!(
+  user: user,
+  soork: web_soork,
+  current_area: entrance
+)
+
+puts "Created Web::Soork '#{web_soork.title}' with ID: #{web_soork.id}"
+puts "Created Web::GameSession with ID: #{game_session.id}"

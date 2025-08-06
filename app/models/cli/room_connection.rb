@@ -15,8 +15,8 @@ module Cli
   class RoomConnection < ApplicationRecord
     self.table_name = 'cli_room_connections'
     
-    belongs_to :source_room, class_name: 'Room'
-    belongs_to :target_room, class_name: 'Room'
+    belongs_to :source_room, class_name: 'Cli::Room'
+    belongs_to :target_room, class_name: 'Cli::Room'
 
     validates :direction, presence: true,
               inclusion: { in: %w(north south east west) }

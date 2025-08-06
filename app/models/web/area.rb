@@ -33,7 +33,7 @@ module Web
 
     validates :name, presence: true
     validates :description, presence: true
-    validates :start_area, uniqueness: {scope: :soork_id, message: "can only have one start area per soork"}
+    validate :only_one_start_area_per_soork
 
     scope :start_areas, -> { where(start_area: true) }
 
@@ -56,5 +56,14 @@ module Web
       }
     end
 
+    private
+
+    def only_one_start_area_per_soork
+      return unless start_area?
+      
+      if soork.areas.where(start_area: true).exists?
+        errors.add(:base, "Only one start area is allowed per Soork")
+      end
+    end
   end
 end
