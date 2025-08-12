@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_06_004253) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_08_163733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -155,7 +155,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_06_004253) do
   end
 
   create_table "web_game_sessions", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "soork_id", null: false
     t.bigint "current_area_id", null: false
     t.jsonb "game_state_flags"

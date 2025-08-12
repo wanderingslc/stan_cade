@@ -69,7 +69,8 @@ web_soork = Web::Soork.create!(
   title: "The Digital Library",
   description: "A futuristic adventure in a virtual library",
   user: user,
-  state: 'published'
+  state: 'published',
+  published: true
 )
 
 puts "Created Web Soork 'The Digital Library' with ID: #{web_soork.id}"

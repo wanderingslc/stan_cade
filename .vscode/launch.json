@@ -2,10 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to Debug Rails",
-      "type": "ruby_lsp",
+      "type": "rdbg",
+      "name": "Attach with rdbg",
       "request": "attach",
-      "debugPort": "12345"
+      "rdbgPath": "${workspaceRoot}/bin/rdbg",
+      "debugPort": "12345",
+      "localfs": true,
+      "showProtocolLog": false
     }
   ]
 }

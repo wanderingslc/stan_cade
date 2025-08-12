@@ -26,5 +26,9 @@ module Web
     def unlocks?(area_connection)
       area_connection.required_item_id == self.id
     end
+
+    def describe_item
+      "#{name}: #{description}"
+    end
   end
 end

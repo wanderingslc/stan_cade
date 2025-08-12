@@ -1,19 +1,53 @@
 import { Controller } from "@hotwired/stimulus";
+import consumer from "../channels/consumer";
 
 // Connects to data-controller="text-adventure"
 export default class extends Controller {
   static targets = ["output", "input", "prompt"];
-  static LOCAL_COMMANDS = ["help", "list", "exit", "play"];
+  static LOCAL_COMMANDS = ["help", "list", "exit", "play", "look"];
+  static values = {
+    history: Array,
+    currentSoorkValue: String,
+    gameSessionId: String,
+    currentArea: String,
+  };
 
   connect() {
     this.displayWelcomeMessage();
     this.focusInput();
-    this.handleList();
+    // this.handleList();
     this.element.addEventListener("click", () => this.focusInput());
 
-    this.history = [];
-    this.currentSoorkValue = null;
-    this.gameSessionId = null;
+    this.commandChannel = consumer.subscriptions.subscriptions.find(
+      (sub) => sub.identifier === JSON.stringify({ channel: "CommandChannel" })
+    );
+    document.addEventListener(
+      "game-response",
+      this.handleWebSocketResponse.bind(this)
+    );
+  }
+
+  handleWebSocketResponse(event) {
+    const data = event.detail;
+
+    if (data.error) {
+      console.error("Error Processing Command:", data.error);
+      this.addToOutput(`Error: ${data.error}, Please try again`, "error");
+    } else {
+      console.log("WebSocket Response:", data);
+
+      if (data.type === "list_soorks") {
+        this.addToOutput("Available Soorks:", "system");
+        data.soorks.forEach((soork) => {
+          this.addToOutput(
+            `${soork.id} - ${soork.title}: ${soork.description}`,
+            "system"
+          );
+        });
+      } else {
+        this.processResponse(data);
+      }
+    }
   }
 
   displayWelcomeMessage() {
@@ -43,7 +77,7 @@ export default class extends Controller {
       if (this.constructor.LOCAL_COMMANDS.includes(command)) {
         this.executeCommand(command, args);
       } else {
-        this.history.push(command);
+        this.historyValue = [...this.historyValue, command];
         this.processCommand(trimmedInput);
       }
 
@@ -63,6 +97,10 @@ export default class extends Controller {
     }
   }
 
+  handleLook() {
+    debugger;
+  }
+
   handlePlay(args) {
     if (!args) {
       this.addToOutput("Please specify a Soork number.", "error");
@@ -71,40 +109,41 @@ export default class extends Controller {
     this.addToOutput(`Starting Soork ${args}...`, "system");
     this.addToOutput("Loading the adventure...", "system");
     this.currentSoorkValue = args;
-    fetch(`/soorks/${args}/start`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        this.processResponse(data);
-      });
+    this.commandChannel.perform("execute_command", {
+      command: `play ${args}`,
+      game_session_id: null,
+    });
   }
 
   processResponse(data) {
     this.gameSessionId = data.game_session_id;
     this.inputTarget.value = "";
     this.addToOutput(data.message, "response");
+    // debugger;
     this.addToOutput(
-      `You are standing in the ${data.current_room.name}`,
+      `You are standing in the ${data.current_area.name}`,
       "response"
     );
-    this.addToOutput(data.current_room.description, "response");
-
-    if (data.result.message) {
-      this.addToOutput(data.result.message, "response");
+    this.addToOutput(data.current_area.description.description, "response");
+    console.log(data.current_area.exits);
+    // if (data.message) {
+    //   this.addToOutput(data.message, "response");
+    // }
+    // debugger;
+    if (data.current_area.exits) {
+      Object.entries(data.current_area.exits).forEach(([direction, exit]) => {
+        this.addToOutput(
+          `You see an exit to the ${direction}: ${exit.description}`,
+          "response"
+        );
+      });
     }
-    if (data.result.exits) {
-      this.addToOutput(`You see exits: ${data.result.exits}`, "response");
-    }
-    if (data.result.items) {
-      if (typeof data.result.items === "string") {
-        this.addToOutput(data.result.items, "response");
+    if (data.current_area.items) {
+      if (typeof data.current_area.items === "string") {
+        this.addToOutput(data.current_area.items, "response");
       } else {
         let itemsString = "";
-        for (const item of data.result.items) {
+        for (const item of data.current_area.items) {
           itemsString += `${item.name} (${item.description}) `;
         }
         this.addToOutput(`You see items: ${itemsString}`, "response");
@@ -117,30 +156,11 @@ export default class extends Controller {
   processCommand(command) {
     console.log("Processing command to server:", command);
     console.log("Current Soork Value:", this.currentSoorkValue);
-    fetch(`/soorks/${this.currentSoorkValue}/process_command`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": this.getMetaTag(),
-      },
-      body: JSON.stringify({
-        command: command,
-        game_session_id: this.gameSessionId,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        this.addToOutput(data.description, "response");
-        this.processResponse(data);
-        this.displayMessage(data.result);
-      })
-      .catch((error) => {
-        console.error("Error processing command:", error);
-        this.addToOutput(
-          "Error processing command. Please try again.",
-          "error"
-        );
-      });
+
+    this.commandChannel.perform("execute_command", {
+      command: command,
+      game_session_id: this.gameSessionId,
+    });
   }
 
   getMetaTag() {

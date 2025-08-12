@@ -15,7 +15,7 @@ class ProcessCommandDispatcher
       GoGameSessionService.new(@game_session, @command).call
     when /^use (.+)/
       UseItemService.new(@game_session, @command).call
-    when 'exit'
+    when 'exit', 'quit'
       ExitGameSessionService.new(@game_session).call
     else 
       puts "Command not recognized."

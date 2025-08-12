@@ -64,7 +64,7 @@ module Web
     end
 
     def use_item(item)
-      debugger
+      
       if has_item?(item)
     
         return false if item.nil?
