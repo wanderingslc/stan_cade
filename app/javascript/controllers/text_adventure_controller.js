@@ -9,7 +9,7 @@ export default class extends Controller {
     history: Array,
     currentSoorkValue: String,
     gameSessionId: String,
-    currentArea: String,
+    currentArea: Object,
   };
 
   connect() {
@@ -33,17 +33,12 @@ export default class extends Controller {
     if (data.error) {
       console.error("Error Processing Command:", data.error);
       this.addToOutput(`Error: ${data.error}, Please try again`, "error");
+      return;
     } else {
       console.log("WebSocket Response:", data);
 
       if (data.type === "list_soorks") {
-        this.addToOutput("Available Soorks:", "system");
-        data.soorks.forEach((soork) => {
-          this.addToOutput(
-            `${soork.id} - ${soork.title}: ${soork.description}`,
-            "system"
-          );
-        });
+        this.displaySoorksList(data.soorks);
       } else {
         this.processResponse(data);
       }
@@ -73,15 +68,13 @@ export default class extends Controller {
       }
 
       const [command, ...args] = trimmedInput.split(" ");
-
+      this.addToOutput(`> ${trimmedInput}`, "command");
       if (this.constructor.LOCAL_COMMANDS.includes(command)) {
         this.executeCommand(command, args);
       } else {
         this.historyValue = [...this.historyValue, command];
         this.processCommand(trimmedInput);
       }
-
-      this.addToOutput(`> ${trimmedInput}`, "command");
 
       this.inputTarget.value = "";
     }
@@ -98,7 +91,13 @@ export default class extends Controller {
   }
 
   handleLook() {
-    debugger;
+    console.log("Current game session id: ", this.gameSessionIdValue);
+    this.addToOutput("You look around...", "response");
+    this.displayAreaInfo();
+    this.displayExits();
+    this.displayItems();
+    this.displayPrompt();
+    console.log("Current game session id: ", this.gameSessionIdValue);
   }
 
   handlePlay(args) {
@@ -116,14 +115,18 @@ export default class extends Controller {
   }
 
   processResponse(data) {
-    this.gameSessionId = data.game_session_id;
+    this.gameSessionIdValue = data.game_session_id;
     this.inputTarget.value = "";
+    this.currentSoorkValue = data.current_soork_value;
+    this.currentAreaValue = data.current_area;
+    console.log("Current game session id: ", this.gameSessionIdValue);
     this.addToOutput(data.message, "response");
     // debugger;
     this.addToOutput(
       `You are standing in the ${data.current_area.name}`,
       "response"
     );
+
     this.addToOutput(data.current_area.description.description, "response");
     console.log(data.current_area.exits);
     // if (data.message) {
@@ -155,11 +158,11 @@ export default class extends Controller {
 
   processCommand(command) {
     console.log("Processing command to server:", command);
-    console.log("Current Soork Value:", this.currentSoorkValue);
-
+    console.log("Current Game Session ID:", this.gameSessionIdValue);
+    // debugger;
     this.commandChannel.perform("execute_command", {
       command: command,
-      game_session_id: this.gameSessionId,
+      game_session_id: this.gameSessionIdValue,
     });
   }
 
@@ -254,5 +257,71 @@ export default class extends Controller {
 
   capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  // Display methods, get working then move to another file
+  displaySoorksList(soorks) {
+    this.addToOutput("Available Soorks:", "system");
+    soorks.forEach((soork) => {
+      this.addToOutput(
+        `${soork.id} - ${soork.title}: ${soork.description}`,
+        "system"
+      );
+    });
+  }
+
+  displayAreaInfo() {
+    this.addToOutput(
+      `You are standing in the ${this.currentAreaValue.name}`,
+      "response"
+    );
+    this.addToOutput(this.currentAreaValue.description.description, "response");
+  }
+
+  displayExits() {
+    if (this.currentAreaValue.exits) {
+      Object.entries(this.currentAreaValue.exits).forEach(
+        ([direction, exit]) => {
+          this.addToOutput(
+            `You see an exit to the ${direction}: ${exit.description}`,
+            "response"
+          );
+        }
+      );
+    }
+  }
+
+  displayItems() {
+    if (!this.currentAreaValue.description.items) return;
+
+    if (typeof this.currentAreaValue.description.items === "string") {
+      this.addToOutput(this.currentAreaValue.description.items, "response");
+    } else {
+      const itemsString = this.currentAreaValue.description.items.join(" ");
+      this.addToOutput(`You see items: ${itemsString}`, "response");
+    }
+  }
+
+  displaySoorksList(soorks) {
+    this.addToOutput("Available Soorks:", "system");
+    soorks.forEach((soork) => {
+      this.addToOutput(
+        `${soork.id} - ${soork.title}: ${soork.description}`,
+        "system"
+      );
+    });
+  }
+
+  displayPrompt() {
+    this.addToOutput("What do you want to do?", "response");
+    this.addToOutput(">", "response");
+    this.inputTarget.value = "";
+  }
+
+  gameSessionIdValueChanged(newValue, previousValue) {
+    console.log("gameSessionIdValue changed:", {
+      from: previousValue,
+      to: newValue,
+      stack: new Error().stack,
+    });
   }
 }

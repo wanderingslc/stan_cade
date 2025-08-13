@@ -17,10 +17,12 @@ class CommandChannel < ApplicationCable::Channel
   end
 
   def execute_command(data)
+  
     command = data['command']&.strip&.downcase
     game_session_id = data['game_session_id']
+    
     response = GameCommandService.new(game_session_id, command, connection.connection_identifier).execute
-
+# debugger
     transmit({
       type: response[:type],
       message: response[:message],

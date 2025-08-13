@@ -7,12 +7,12 @@ class GoGameSessionService
   def call
 
     direction = @command.split(" ").last
-    current_room = @game_session.current_room
+    current_area = @game_session.current_area
     connection = case direction
-    when 'north' then current_room.north_connection
-    when 'south' then current_room.south_connection
-    when 'east' then current_room.east_connection
-    when 'west' then current_room.west_connection
+    when 'north' then current_area.north_connection
+    when 'south' then current_area.south_connection
+    when 'east' then current_area.east_connection
+    when 'west' then current_area.west_connection
     else
       return {
         message: "Invalid direction. Please use north, south, east, or west."
@@ -20,21 +20,18 @@ class GoGameSessionService
     end
 
     if connection
-      @game_session.current_room = connection.target_room
+      @game_session.current_area = connection.target_area
       @game_session.save
 
       {
+        type: 'move_area',
         message: "You moved to the #{direction}.",
-        room: {
-          name: @game_session.current_room.name,
-          description: @game_session.current_room.description,
-          items: @game_session.current_room.items.map do |item|
-            {
-              name: item.name,
-              description: item.description
-            }
-          end
-        }
+        game_session_id: @game_session.id,
+        current_area: {
+          name: @game_session.current_area.name,
+          description: @game_session.current_area.describe_area,
+          exits: @game_session.current_area.exits
+        } 
       }
     else
       {

@@ -5,7 +5,6 @@ class ProcessCommandDispatcher
   end
 
   def process_command
-  
     case @command
     when 'look'
       LookPlayerService.new(@game_session).call

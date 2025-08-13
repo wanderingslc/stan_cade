@@ -5,29 +5,30 @@ class TakeItemService
   end
 
   def call
-    item = Item.where("LOWER(name) ILIKE LOWER(?)", @command.gsub("take ", "").strip.downcase).first
-
-    current_room = @game_session.current_room
-    room_items = current_room.items
-    room_items.each do |room_item|
-      if !@game_session.has_item?(room_item)
-        item = room_item
-      end
-    end
-   
     
+    item = Web::Item.where("LOWER(name) ILIKE LOWER(?)", @command.gsub("take ", "").strip.downcase).first
+
+   
+    debugger
     if item.nil?
       {
+        type: 'no_item',
         message: "There is nothing to get here.",
+        game_session_id: @game_session.id
       }
     elsif @game_session.has_item?(item)
       {
+        type: 'item_already_taken',
         message: "You already have the #{item.name}.",
+        game_session_id: @game_session.id
       }
     else
+      debugger
       @game_session.pick_up_item(item)
       {
+        type: 'item_taken',
         message: "You picked up the #{item.name}.",
+        game_session_id: @game_session.id,
         item: item
       } 
     end

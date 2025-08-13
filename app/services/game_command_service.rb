@@ -1,11 +1,12 @@
 class GameCommandService
   def initialize(game_session_id, command, connection_id)
-    @game_session = game_session_id
+    @game_session_id = game_session_id
     @command = command
     @connection_id = connection_id
   end
 
   def execute
+    
     if @game_session_id.nil?
       if @command.match(/^play (\d+)$/)
         soork_id = $1.to_i
@@ -14,12 +15,13 @@ class GameCommandService
         return list_soorks
       end
     end
-debugger
+
     game_session = Web::GameSession.find_by(id: @game_session_id)
+    # debugger
     return list_soorks unless game_session
 
     result = ProcessCommandDispatcher.new(@command, game_session).process_command
-
+    
     if @command == 'exit' || @command == 'quit'
       return list_soorks.merge(exit_message: result[:message])
     end
