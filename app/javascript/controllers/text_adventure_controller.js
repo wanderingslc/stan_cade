@@ -4,10 +4,9 @@ import consumer from "../channels/consumer";
 // Connects to data-controller="text-adventure"
 export default class extends Controller {
   static targets = ["output", "input", "prompt"];
-  static LOCAL_COMMANDS = ["help", "list", "exit", "play", "look"];
+  static LOCAL_COMMANDS = ["help", "list", "exit", "play", "look", "resume"];
   static values = {
     history: Array,
-    currentSoorkValue: String,
     gameSessionId: String,
     currentArea: Object,
   };
@@ -39,10 +38,29 @@ export default class extends Controller {
 
       if (data.type === "list_soorks") {
         this.displaySoorksList(data.soorks);
+      } else if (data.type === "current_state") {
+        this.restoreGameState(data);
+      } else if (data.type === "resume_available") {
+        this.gameSessionIdValue = data.existing_game.id;
+        this.addToOutput(
+          `Resuming game session ${this.gameSessionIdValue}...`,
+          "system"
+        );
+        this.displaySoorksList(data.soorks);
       } else {
         this.processResponse(data);
       }
     }
+  }
+
+  restoreGameState(data) {
+    console.log("🎮 Restoring game state:", data);
+    this.currentAreaValue = data.current_area;
+    this.addToOutput("--- Resuming your game ---", "system");
+    this.displayAreaInfo();
+    this.displayExits();
+    this.displayItems();
+    this.displayPrompt();
   }
 
   displayWelcomeMessage() {
@@ -66,7 +84,7 @@ export default class extends Controller {
         this.addToOutput("Please enter a command.", "error");
         return;
       }
-
+      // debugger;
       const [command, ...args] = trimmedInput.split(" ");
       this.addToOutput(`> ${trimmedInput}`, "command");
       if (this.constructor.LOCAL_COMMANDS.includes(command)) {
@@ -98,6 +116,11 @@ export default class extends Controller {
     this.displayItems();
     this.displayPrompt();
     console.log("Current game session id: ", this.gameSessionIdValue);
+  }
+
+  handleResume() {
+    console.log("Resuming game session:", this.gameSessionIdValue);
+    this.handleLook();
   }
 
   handlePlay(args) {

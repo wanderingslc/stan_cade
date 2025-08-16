@@ -1,8 +1,8 @@
 class GameCommandService
-  def initialize(game_session_id, command, connection_id)
+  def initialize(game_session_id, command, connection)
     @game_session_id = game_session_id
     @command = command
-    @connection_id = connection_id
+    @connection = connection
   end
 
   def execute
@@ -43,6 +43,10 @@ class GameCommandService
   def start_new_game(soork_id)
     result = WebStartGameService.new(soork_id).call
 
+    if @connection
+      @connection.set_game_session_cookie(result[:game_session_id])
+    end
+debugger
     if result[:game_session_id]
       {
         type: 'game_started',
