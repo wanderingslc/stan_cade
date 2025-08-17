@@ -63,7 +63,7 @@ class GameCommandService
   end
 
   def resume_game(game_session_id, player_uuid)
-    debugger
+    
     game_session = Web::GameSession.find_by(id: game_session_id)
 
     if game_session
@@ -71,7 +71,11 @@ class GameCommandService
         type: 'game_resumed',
         message: "Resuming game session #{game_session_id}...",
         game_session_id: game_session.id,
-        current_area: game_session.current_area
+        current_area: {
+          name: game_session.current_area.name,
+          description: game_session.current_area.describe_area,
+          exits: game_session.current_area.exits
+        }
       }
     else
       {

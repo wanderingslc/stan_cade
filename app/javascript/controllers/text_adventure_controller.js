@@ -35,7 +35,6 @@ export default class extends Controller {
       return;
     } else {
       console.log("WebSocket Response:", data);
-
       if (data.type === "list_soorks") {
         this.displaySoorksList(data.soorks);
       } else if (data.type === "current_state") {
@@ -146,13 +145,13 @@ export default class extends Controller {
   }
 
   processResponse(data) {
+    debugger;
     this.gameSessionIdValue = data.game_session_id;
     this.inputTarget.value = "";
     this.currentSoorkValue = data.current_soork_value;
     this.currentAreaValue = data.current_area;
     console.log("Current game session id: ", this.gameSessionIdValue);
     this.addToOutput(data.message, "response");
-    // debugger;
     this.addToOutput(
       `You are standing in the ${data.current_area.name}`,
       "response"

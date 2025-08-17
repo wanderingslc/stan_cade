@@ -41,7 +41,7 @@ class CommandChannel < ApplicationCable::Channel
     game_session_id = data['game_session_id']
   
     response = GameCommandService.new(game_session_id, command, connection, player_uuid).execute
-debugger
+
     transmit({
       type: response[:type],
       message: response[:message],
