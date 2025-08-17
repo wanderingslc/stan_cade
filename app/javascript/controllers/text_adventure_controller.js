@@ -4,7 +4,7 @@ import consumer from "../channels/consumer";
 // Connects to data-controller="text-adventure"
 export default class extends Controller {
   static targets = ["output", "input", "prompt"];
-  static LOCAL_COMMANDS = ["help", "list", "exit", "play", "look", "resume"];
+  static LOCAL_COMMANDS = ["help", "list", "exit", "play", "look"];
   static values = {
     history: Array,
     gameSessionId: String,
@@ -41,16 +41,24 @@ export default class extends Controller {
       } else if (data.type === "current_state") {
         this.restoreGameState(data);
       } else if (data.type === "resume_available") {
-        this.gameSessionIdValue = data.existing_game.id;
-        this.addToOutput(
-          `Resuming game session ${this.gameSessionIdValue}...`,
-          "system"
-        );
+        this.addToOutput(data.message, "system");
         this.displaySoorksList(data.soorks);
+        this.displayResumeGames(data.existing_games);
       } else {
         this.processResponse(data);
       }
     }
+  }
+
+  displayResumeGames(existingGames) {
+    console.log("🎮 Resuming game session:", existingGames);
+    this.addToOutput("You have existing games in progress:", "system");
+    existingGames.forEach((game) => {
+      this.addToOutput(
+        `${game.id} - ${game.title}: ${game.description}`,
+        "system"
+      );
+    });
   }
 
   restoreGameState(data) {
@@ -338,13 +346,5 @@ export default class extends Controller {
     this.addToOutput("What do you want to do?", "response");
     this.addToOutput(">", "response");
     this.inputTarget.value = "";
-  }
-
-  gameSessionIdValueChanged(newValue, previousValue) {
-    console.log("gameSessionIdValue changed:", {
-      from: previousValue,
-      to: newValue,
-      stack: new Error().stack,
-    });
   }
 }

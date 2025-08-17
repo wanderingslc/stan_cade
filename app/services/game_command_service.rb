@@ -1,16 +1,20 @@
 class GameCommandService
-  def initialize(game_session_id, command, connection)
+  def initialize(game_session_id, command, connection, player_uuid = nil)
     @game_session_id = game_session_id
     @command = command
     @connection = connection
+    @player_uuid = player_uuid
   end
 
   def execute
-    
-    if @game_session_id.nil?
+
+    if @game_session_id.blank?
       if @command.match(/^play (\d+)$/)
         soork_id = $1.to_i
-        return start_new_game(soork_id)
+        return start_new_game(soork_id, @player_uuid)
+      elsif @command.match(/^resume (\d+)$/)
+        game_session_id = $1.to_i
+        return resume_game(game_session_id, @player_uuid)
       else
         return list_soorks
       end
@@ -40,13 +44,9 @@ class GameCommandService
     }
   end
 
-  def start_new_game(soork_id)
-    result = WebStartGameService.new(soork_id).call
+  def start_new_game(soork_id, player_uuid)
+    result = WebStartGameService.new(soork_id, player_uuid).call
 
-    if @connection
-      @connection.set_game_session_cookie(result[:game_session_id])
-    end
-debugger
     if result[:game_session_id]
       {
         type: 'game_started',
@@ -58,6 +58,25 @@ debugger
       {
         type: 'error',
         message: result[:message]
+      }
+    end
+  end
+
+  def resume_game(game_session_id, player_uuid)
+    debugger
+    game_session = Web::GameSession.find_by(id: game_session_id)
+
+    if game_session
+      {
+        type: 'game_resumed',
+        message: "Resuming game session #{game_session_id}...",
+        game_session_id: game_session.id,
+        current_area: game_session.current_area
+      }
+    else
+      {
+        type: 'error',
+        message: "Game session #{game_session_id} not found."
       }
     end
   end

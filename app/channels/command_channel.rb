@@ -3,29 +3,27 @@ class CommandChannel < ApplicationCable::Channel
 
     stream_from "command_#{connection.connection_identifier}"
 
-    existing_session_id = connection.game_session_id
-    Rails.logger.info "Found game session from cookie: #{existing_session_id}"
+    
+    Rails.logger.info "Found player UUID from cookie: #{player_uuid}"
 
-
+    existing_sessions = Web::GameSession.where(player_uuid: player_uuid)
 
     soorks = Web::Soork.published.order(:created_at).pluck(:id, :title, :description)
-    # debugger
-    if existing_session_id
+ 
+    if existing_sessions.any?
       begin
-        game_session = Web::GameSession.find(existing_session_id)
         transmit({
           type: 'resume_available',
-          message: "Welcome back! You have a game in progress. Type 'resume' to continue or 'play <number>' to start new",
+          message: "Welcome back! You have a game in progress. Type 'resume <number>' to continue or 'play <number>' to start new",
           soorks: soorks.map { |id, title, description| { id: id, title: title, description: description }},
-          existing_game: {
-            id: game_session.id,
-            title: game_session.title,
-            description: game_session.description,
-            current_area: game_session.current_area
-          }
+          existing_games: existing_sessions.map { |session| {
+            id: session.id,
+            title: session.soork.title,
+            description: session.soork.description,
+            current_area: session.current_area
+          }}
         })
       rescue ActiveRecord::RecordNotFound
-        connection.session[:game_session_id] = nil
         send_normal_welcome(soorks)
       end
     else
@@ -41,9 +39,9 @@ class CommandChannel < ApplicationCable::Channel
   
     command = data['command']&.strip&.downcase
     game_session_id = data['game_session_id']
-    
-    response = GameCommandService.new(game_session_id, command, connection).execute
-# debugger
+  
+    response = GameCommandService.new(game_session_id, command, connection, player_uuid).execute
+debugger
     transmit({
       type: response[:type],
       message: response[:message],

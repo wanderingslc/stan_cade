@@ -12,6 +12,6 @@ class GamesController < ApplicationController
   end
 
   def sork
-
+    cookies.permanent[:player_uuid] ||= SecureRandom.uuid
   end
 end
