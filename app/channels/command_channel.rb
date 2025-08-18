@@ -45,8 +45,8 @@ class CommandChannel < ApplicationCable::Channel
     transmit({
       type: response[:type],
       message: response[:message],
-      game_session_id: response[:game_session_id],
-      current_area: response[:current_area]
+      game_session_id: response&.[](:game_session_id),
+      current_area: response&.[](:current_area)
     })
   end
 

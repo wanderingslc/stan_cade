@@ -43,6 +43,8 @@ export default class extends Controller {
         this.addToOutput(data.message, "system");
         this.displaySoorksList(data.soorks);
         this.displayResumeGames(data.existing_games);
+      } else if (data.type === "error") {
+        this.addToOutput(data.message, "error");
       } else {
         this.processResponse(data);
       }
@@ -91,7 +93,6 @@ export default class extends Controller {
         this.addToOutput("Please enter a command.", "error");
         return;
       }
-      // debugger;
       const [command, ...args] = trimmedInput.split(" ");
       this.addToOutput(`> ${trimmedInput}`, "command");
       if (this.constructor.LOCAL_COMMANDS.includes(command)) {
@@ -145,7 +146,6 @@ export default class extends Controller {
   }
 
   processResponse(data) {
-    debugger;
     this.gameSessionIdValue = data.game_session_id;
     this.inputTarget.value = "";
     this.currentSoorkValue = data.current_soork_value;
@@ -162,7 +162,7 @@ export default class extends Controller {
     // if (data.message) {
     //   this.addToOutput(data.message, "response");
     // }
-    // debugger;
+
     if (data.current_area.exits) {
       Object.entries(data.current_area.exits).forEach(([direction, exit]) => {
         this.addToOutput(
@@ -189,7 +189,6 @@ export default class extends Controller {
   processCommand(command) {
     console.log("Processing command to server:", command);
     console.log("Current Game Session ID:", this.gameSessionIdValue);
-    // debugger;
     this.commandChannel.perform("execute_command", {
       command: command,
       game_session_id: this.gameSessionIdValue,

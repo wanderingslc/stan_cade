@@ -45,6 +45,7 @@ class GameCommandService
   end
 
   def start_new_game(soork_id, player_uuid)
+ 
     result = WebStartGameService.new(soork_id, player_uuid).call
 
     if result[:game_session_id]

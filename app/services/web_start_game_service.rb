@@ -1,12 +1,13 @@
 class WebStartGameService
   def initialize(soork_id, player_uuid = nil)
-    @soork = Web::Soork.find(soork_id)
+
+    @soork = Web::Soork.find_by(id: soork_id)
     @player_uuid = player_uuid
 
     if @soork
       start_new_game
     else
-      { message: "Soork not found" }
+      @result = { message: "Soork not found" }
     end
   end
 
