@@ -1,14 +1,27 @@
+// {
+//   "version": "0.2.0",
+//   "configurations": [
+//     {
+//       "type": "rdbg",
+//       "name": "Attach with rdbg",
+//       "request": "attach",
+//       "rdbgPath": "${workspaceRoot}/bin/rdbg",
+//       "debugPort": "12345",
+//       "localfs": true,
+//       "showProtocolLog": false
+//     }
+//   ]
+// }
 {
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug Rails with rdbg",
       "type": "rdbg",
-      "name": "Attach with rdbg",
-      "request": "attach",
-      "rdbgPath": "${workspaceRoot}/bin/rdbg",
-      "debugPort": "12345",
-      "localfs": true,
-      "showProtocolLog": false
+      "request": "launch",
+      "script": "${workspaceFolder}/bin/rails",
+      "args": ["server"],
+      "useBundler": true
     }
   ]
 }

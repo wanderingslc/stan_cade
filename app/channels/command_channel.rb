@@ -39,7 +39,15 @@ class CommandChannel < ApplicationCable::Channel
   
     command = data['command']&.strip&.downcase
     game_session_id = data['game_session_id']
-  
+
+    if contains_sql_injection?(command)
+      transmit({
+        type: 'error',
+        message: 'Invalid command.'
+      })
+      return
+    end
+
     response = GameCommandService.new(game_session_id, command, connection, player_uuid).execute
 
     transmit({
@@ -58,5 +66,31 @@ class CommandChannel < ApplicationCable::Channel
       message: "Welcome to the Soork (SOrt Of Zork)! Type 'play <number>' to begin your adventure, or 'help' for commands.",
       soorks: soorks.map { |id, title, description| { id: id, title: title, description: description } }
     })
+  end
+
+  def contains_sql_injection?(input)
+    return true if input.nil? || input.length > 100
+
+      dangerous_patterns = [
+        /union\s+select/i,
+        /drop\s+table/i,
+        /delete\s+from/i,
+        /insert\s+into/i,
+        /update\s+.*set/i,
+        /;\s*drop/i,
+        /;\s*delete/i,
+        /--/,                    # SQL comments
+        /\/\*/,                  # Block comments
+        /exec\s*\(/i,
+        /xp_cmdshell/i,
+        /sp_executesql/i,
+        /'.*or.*'.*=/i,          # Classic OR injection
+        /".*or.*".*=/i,
+        /1=1/,
+        /1\s*=\s*1/,
+        /'\s*or\s*'.*'=/i
+      ]
+  
+    dangerous_patterns.any? { |pattern| input.match?(pattern) }
   end
 end
