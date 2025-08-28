@@ -7,9 +7,7 @@ class TakeItemService
   def call
     
     item = Web::Item.where("LOWER(name) ILIKE LOWER(?)", @command.gsub("take ", "").strip.downcase).first
-
-   
-    debugger
+    
     if item.nil?
       {
         type: 'no_item',
@@ -23,7 +21,6 @@ class TakeItemService
         game_session_id: @game_session.id
       }
     else
-      debugger
       @game_session.pick_up_item(item)
       {
         type: 'item_taken',

@@ -4,7 +4,8 @@ import consumer from "../channels/consumer";
 // Connects to data-controller="text-adventure"
 export default class extends Controller {
   static targets = ["output", "input", "prompt"];
-  static LOCAL_COMMANDS = ["help", "list", "exit", "play", "look"];
+  static LOCAL_COMMANDS = ["help", "exit", "play", "look"];
+  static ALLOWED_COMMANDS = ["play", "resume", "list", ...this.LOCAL_COMMANDS];
   static values = {
     history: Array,
     gameSessionId: String,
@@ -28,7 +29,6 @@ export default class extends Controller {
 
   handleWebSocketResponse(event) {
     const data = event.detail;
-
     if (data.error) {
       console.error("Error Processing Command:", data.error);
       this.addToOutput(`Error: ${data.error}, Please try again`, "error");
@@ -43,6 +43,8 @@ export default class extends Controller {
         this.addToOutput(data.message, "system");
         this.displaySoorksList(data.soorks);
         this.displayResumeGames(data.existing_games);
+      } else if (data.type === "inventory") {
+        this.displayInventory(data.message);
       } else if (data.type === "error") {
         this.addToOutput(data.message, "error");
       } else {
@@ -93,8 +95,30 @@ export default class extends Controller {
         this.addToOutput("Please enter a command.", "error");
         return;
       }
+
       const [command, ...args] = trimmedInput.split(" ");
       this.addToOutput(`> ${trimmedInput}`, "command");
+
+      if (
+        this.gameSessionIdValue === "" &&
+        !this.constructor.ALLOWED_COMMANDS.includes(command)
+      ) {
+        this.handleHelp();
+        return;
+      }
+
+      if (
+        this.gameSessionIdValue !== "" &&
+        ["resume", "list", "play"].includes(command)
+      ) {
+        this.addToOutput(
+          "You must exit the current game before starting a new one.",
+          "error"
+        );
+        this.clearInput();
+        return;
+      }
+
       if (this.constructor.LOCAL_COMMANDS.includes(command)) {
         this.executeCommand(command, args);
       } else {
@@ -227,22 +251,23 @@ export default class extends Controller {
   }
 
   handleList() {
-    fetch("/soorks.json")
-      .then((response) => response.json())
-      .then((data) => {
-        this.addToOutput("Available Soorks: ", "system");
-        data.forEach((sork) => {
-          this.addToOutput(`${sork.id} - ${sork.title}`, "system");
-        });
-        this.addToOutput(
-          "Enter the number of the Soork you want to play: play <number>",
-          "system"
-        );
-      })
-      .catch((error) => {
-        console.error("Error fetching Soorks:", error);
-        this.addToOutput("Error fetching Soorks. Please try again.", "error");
-      });
+    this.displaySoorksList(data.soorks);
+    // fetch("/soorks.json")
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     this.addToOutput("Available Soorks: ", "system");
+    //     data.forEach((sork) => {
+    //       this.addToOutput(`${sork.id} - ${sork.title}`, "system");
+    //     });
+    //     this.addToOutput(
+    //       "Enter the number of the Soork you want to play: play <number>",
+    //       "system"
+    //     );
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching Soorks:", error);
+    //     this.addToOutput("Error fetching Soorks. Please try again.", "error");
+    //   });
   }
 
   handleQuit() {
@@ -262,15 +287,20 @@ export default class extends Controller {
   }
 
   handleHelp() {
-    if (this.currentSoorkValue === null) {
+    if (this.gameSessionIdValue === "") {
       this.addToOutput("Available commands: ", "system");
       this.addToOutput("  list - Show available Soorks", "system");
       this.addToOutput(
         "  play <number> - Start the adventure with that number",
         "system"
       );
+      this.addToOutput(
+        "  resume <game_id> - Resume an existing game",
+        "system"
+      );
       this.addToOutput("  help - Show this help message", "system");
       this.addToOutput("  quit/exit - Exit the game", "system");
+      this.clearInput();
     } else {
       this.addToOutput("Try commands like:", "system");
       this.addToOutput("  look - Look around", "system");
@@ -281,7 +311,13 @@ export default class extends Controller {
       this.addToOutput("  go - Move in a direction", "system");
       this.addToOutput("  help - Show this help message", "system");
       this.addToOutput("  quit/exit - Exit the game", "system");
+      this.clearInput();
     }
+  }
+
+  clearInput() {
+    this.addToOutput(">", "response");
+    this.inputTarget.value = "";
   }
 
   capitalize(str) {
@@ -328,6 +364,13 @@ export default class extends Controller {
       const itemsString = this.currentAreaValue.description.items.join(" ");
       this.addToOutput(`You see items: ${itemsString}`, "response");
     }
+  }
+
+  displayInventory(items) {
+    this.addToOutput("Your inventory contains:", "system");
+    items.forEach((item) => {
+      this.addToOutput(`- ${item.name}: ${item.description}`, "system");
+    });
   }
 
   displaySoorksList(soorks) {

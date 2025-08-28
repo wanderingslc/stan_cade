@@ -19,7 +19,7 @@
       "name": "Debug Rails with rdbg",
       "type": "rdbg",
       "request": "launch",
-      "script": "${workspaceFolder}/bin/rails",
+      "script": "${workspaceFolder}/bin/dev",
       "args": ["server"],
       "useBundler": true
     }
