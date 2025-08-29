@@ -45,6 +45,10 @@ export default class extends Controller {
         this.displayResumeGames(data.existing_games);
       } else if (data.type === "inventory") {
         this.displayInventory(data.message);
+      } else if (data.type === "game_exited") {
+        this.addToOutput(data.message, "system");
+        this.displaySoorksList(data.soorks);
+        this.displayResumeGames(data.existing_games);
       } else if (data.type === "error") {
         this.addToOutput(data.message, "error");
       } else {
@@ -170,6 +174,9 @@ export default class extends Controller {
   }
 
   processResponse(data) {
+    if (data.game_session_id === null) {
+      debugger;
+    }
     this.gameSessionIdValue = data.game_session_id;
     this.inputTarget.value = "";
     this.currentSoorkValue = data.current_soork_value;
@@ -252,22 +259,6 @@ export default class extends Controller {
 
   handleList() {
     this.displaySoorksList(data.soorks);
-    // fetch("/soorks.json")
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     this.addToOutput("Available Soorks: ", "system");
-    //     data.forEach((sork) => {
-    //       this.addToOutput(`${sork.id} - ${sork.title}`, "system");
-    //     });
-    //     this.addToOutput(
-    //       "Enter the number of the Soork you want to play: play <number>",
-    //       "system"
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching Soorks:", error);
-    //     this.addToOutput("Error fetching Soorks. Please try again.", "error");
-    //   });
   }
 
   handleQuit() {
@@ -325,7 +316,7 @@ export default class extends Controller {
   }
   // Display methods, get working then move to another file
   displaySoorksList(soorks) {
-    this.addToOutput("Available Soorks:", "system");
+    this.addToOutput("Available Soorks 319:", "system");
     soorks.forEach((soork) => {
       this.addToOutput(
         `${soork.id} - ${soork.title}: ${soork.description}`,
@@ -374,7 +365,8 @@ export default class extends Controller {
   }
 
   displaySoorksList(soorks) {
-    this.addToOutput("Available Soorks:", "system");
+    debugger;
+    this.addToOutput("Available Soorks 368:", "system");
     soorks.forEach((soork) => {
       this.addToOutput(
         `${soork.id} - ${soork.title}: ${soork.description}`,

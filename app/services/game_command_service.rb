@@ -21,14 +21,10 @@ class GameCommandService
     end
 
     game_session = Web::GameSession.find_by(id: @game_session_id)
-    # debugger
+    
     return list_soorks unless game_session
 
     result = ProcessCommandDispatcher.new(@command, game_session).process_command
-    
-    if @command == 'exit' || @command == 'quit'
-      return list_soorks.merge(exit_message: result[:message])
-    end
 
     result
   end

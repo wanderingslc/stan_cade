@@ -17,7 +17,7 @@ class ProcessCommandDispatcher
     when /^inventory/
       ShowInventoryService.new(@game_session).call
     when 'exit', 'quit'
-      ExitGameSessionService.new(@game_session).call
+      raise "Exit or quit hit in the process command dispatcher"
     else 
       puts "Command not recognized."
     end

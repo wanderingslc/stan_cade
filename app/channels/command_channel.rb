@@ -12,17 +12,7 @@ class CommandChannel < ApplicationCable::Channel
  
     if existing_sessions.any?
       begin
-        transmit({
-          type: 'resume_available',
-          message: "Welcome back! You have a game in progress. Type 'resume <number>' to continue or 'play <number>' to start new",
-          soorks: soorks.map { |id, title, description| { id: id, title: title, description: description }},
-          existing_games: existing_sessions.map { |session| {
-            id: session.id,
-            title: session.soork.title,
-            description: session.soork.description,
-            current_area: session.current_area
-          }}
-        })
+        send_resume_welcome(soorks, existing_sessions)
       rescue ActiveRecord::RecordNotFound
         send_normal_welcome(soorks)
       end
@@ -48,6 +38,14 @@ class CommandChannel < ApplicationCable::Channel
       return
     end
 
+    if ['exit', 'quit'].include?(command)
+      existing_sessions = Web::GameSession.where(player_uuid: player_uuid)
+      soorks = Web::Soork.published.order(:created_at).pluck(:id, :title, :description)
+
+      send_resume_welcome(soorks, existing_sessions, 'game_exited', "You have exited game #{data['game_session_id']}. Type 'resume <number>' to continue or 'play <number>' to start new")
+      return
+    end
+
     response = GameCommandService.new(game_session_id, command, connection, player_uuid).execute
 
     transmit({
@@ -59,6 +57,20 @@ class CommandChannel < ApplicationCable::Channel
   end
 
   private
+
+  def send_resume_welcome(soorks, existing_games, type='resume_available', message="Welcome back! You have a game in progress. Type 'resume <number>' to continue or 'play <number>' to start new")
+    transmit({
+      type: type,
+      message: message,
+      soorks: soorks.map { |id, title, description| { id: id, title: title, description: description }},
+      existing_games: existing_games.map { |session| {
+        id: session.id,
+        title: session.soork.title,
+        description: session.soork.description,
+        current_area: session.current_area
+      }}
+    })
+  end
 
   def send_normal_welcome(soorks)
     transmit({
