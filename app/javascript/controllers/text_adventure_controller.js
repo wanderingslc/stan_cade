@@ -365,7 +365,6 @@ export default class extends Controller {
   }
 
   displaySoorksList(soorks) {
-    debugger;
     this.addToOutput("Available Soorks 368:", "system");
     soorks.forEach((soork) => {
       this.addToOutput(

@@ -56,6 +56,14 @@ module Web
       }
     end
 
+    def handle_item_use(item, target_name, game_session)
+      if target_name
+        handle_targeted_use(item, target_name, game_session)
+      else
+        handle_generic_use(item, game_session)
+      end
+    end
+
     private
 
     def only_one_start_area_per_soork
@@ -63,6 +71,26 @@ module Web
       
       if soork.areas.where(start_area: true).exists?
         errors.add(:base, "Only one start area is allowed per Soork")
+      end
+    end
+
+    def handle_targeted_use(item, target_name, game_session)
+      interaction = Interaction.find_by(item: item, target_name: target_name)
+
+      if interaction
+        interaction.execute(game_session)
+      else
+        {message: "You can't use #{item.name} on #{target_name}."}
+      end
+    end
+
+    def handle_generic_use(item, game_session)
+      interaction = Interaction.find_by(item: item, target_name: nil)
+
+      if interaction
+        interaction.execute(game_session)
+      else
+        {message: "You can't use #{item.name}."}
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_16_234029) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_29_192451) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -182,6 +182,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_16_234029) do
     t.index ["user_id"], name: "index_web_game_sessions_on_user_id"
   end
 
+  create_table "web_interactions", force: :cascade do |t|
+    t.bigint "area_id", null: false
+    t.bigint "item_id", null: false
+    t.string "target_name"
+    t.text "success_message"
+    t.json "effects"
+    t.boolean "consumes_item", default: false
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_web_interactions_on_area_id"
+    t.index ["item_id"], name: "index_web_interactions_on_item_id"
+  end
+
   create_table "web_items", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -235,6 +249,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_16_234029) do
   add_foreign_key "web_game_sessions", "users"
   add_foreign_key "web_game_sessions", "web_areas", column: "current_area_id"
   add_foreign_key "web_game_sessions", "web_soorks", column: "soork_id"
+  add_foreign_key "web_interactions", "web_areas", column: "area_id"
+  add_foreign_key "web_interactions", "web_items", column: "item_id"
   add_foreign_key "web_items", "web_areas", column: "area_id"
   add_foreign_key "web_items", "web_soorks", column: "soork_id"
   add_foreign_key "web_soorks", "users"
