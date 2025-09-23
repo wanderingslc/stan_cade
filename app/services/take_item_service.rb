@@ -26,8 +26,13 @@ class TakeItemService
         type: 'item_taken',
         message: "You picked up the #{item.name}.",
         game_session_id: @game_session.id,
-        item: item
-      } 
+        item: item,
+        current_area: {
+          name: @game_session.current_area.name,
+          description: @game_session.current_area.description,
+          items: @game_session.current_area.items
+        }
+      }
     end
   end
 end

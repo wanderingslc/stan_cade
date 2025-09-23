@@ -4,37 +4,34 @@ class LookPlayerService
   end
 
   def call
-    current_room = @game_session.current_room
+    current_area = @game_session.current_area
     {
-      description: current_room.description,
-      name: current_room.name,
-      exits: available_exits(current_room),
-      items: items(current_room)
+      type: 'look',
+      game_session_id: @game_session.id,
+      current_area: {
+        description: current_area.describe_area,
+        name: current_area.name,
+        exits: current_area.exits,
+        items: items(current_area)
+      }
     }
   end
 
   private
 
-  def available_exits(current_room)
-    exits = []
-    exits << 'north' if current_room.north_connection
-    exits << 'south' if current_room.south_connection
-    exits << 'east' if current_room.east_connection
-    exits << 'west' if current_room.west_connection
-    exits
-  end
-
-  def items(current_room)
-    items = current_room.items.reject(&:picked_up)
-    if items.empty?
+  def items(current_area)
+    items = current_area.items.where.not(id: @game_session.items&.ids)
+    if current_area.items.empty?
       "There is nothing to get here."
+    elsif items.empty?
+      "You have collected all items here."
     else
       items.map do |item|
         {
           name: item.name,
           description: item.description,
-          picked_up: item.picked_up,
-          state: item.state
+          examine_text: item.examine_text,
+          properties: item.properties
         }
       end
     end

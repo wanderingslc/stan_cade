@@ -47,7 +47,7 @@ class CommandChannel < ApplicationCable::Channel
     end
 
     response = GameCommandService.new(game_session_id, command, connection, player_uuid).execute
-
+    
     transmit({
       type: response[:type],
       message: response[:message],

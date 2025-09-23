@@ -4,7 +4,7 @@ import consumer from "../channels/consumer";
 // Connects to data-controller="text-adventure"
 export default class extends Controller {
   static targets = ["output", "input", "prompt"];
-  static LOCAL_COMMANDS = ["help", "exit", "play", "look"];
+  static LOCAL_COMMANDS = ["help", "exit", "play"];
   static ALLOWED_COMMANDS = ["play", "resume", "list", ...this.LOCAL_COMMANDS];
   static values = {
     history: Array,
@@ -147,6 +147,7 @@ export default class extends Controller {
   handleLook() {
     console.log("Current game session id: ", this.gameSessionIdValue);
     this.addToOutput("You look around...", "response");
+    debugger;
     this.displayAreaInfo();
     this.displayExits();
     this.displayItems();
