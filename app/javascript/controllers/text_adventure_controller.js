@@ -4,7 +4,7 @@ import consumer from "../channels/consumer";
 // Connects to data-controller="text-adventure"
 export default class extends Controller {
   static targets = ["output", "input", "prompt"];
-  static LOCAL_COMMANDS = ["help", "exit", "play"];
+  static LOCAL_COMMANDS = ["help", "exit", "play", "quit"];
   static ALLOWED_COMMANDS = ["play", "resume", "list", ...this.LOCAL_COMMANDS];
   static values = {
     history: Array,
@@ -49,7 +49,6 @@ export default class extends Controller {
         this.addToOutput(data.message, "system");
         this.displaySoorksList(data.soorks);
         this.displayResumeGames(data.existing_games);
-        this.gameSessionIdValue = "";
       } else if (data.type === "error") {
         this.addToOutput(data.message, "error");
       } else {
@@ -116,7 +115,6 @@ export default class extends Controller {
         this.gameSessionIdValue !== "" &&
         ["resume", "list", "play"].includes(command)
       ) {
-        debugger;
         this.addToOutput(
           "You must exit the current game before starting a new one.",
           "error"
@@ -271,10 +269,10 @@ export default class extends Controller {
   handleExit() {
     this.addToOutput("Exiting the game...", "system");
     // Perform any necessary cleanup or state saving
-
     this.inputTarget.value = "";
     this.outputTarget.innerHTML = ""; // Clear the output
     this.currentSoorkValue = null; // Reset the current Soork value
+    this.gameSessionIdValue = ""; // Clear the game session ID
     this.addToOutput("Thank you for playing!", "system");
     this.processCommand("exit");
   }
