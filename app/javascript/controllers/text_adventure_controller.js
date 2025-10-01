@@ -49,6 +49,7 @@ export default class extends Controller {
         this.addToOutput(data.message, "system");
         this.displaySoorksList(data.soorks);
         this.displayResumeGames(data.existing_games);
+        this.gameSessionIdValue = "";
       } else if (data.type === "error") {
         this.addToOutput(data.message, "error");
       } else {
@@ -115,6 +116,7 @@ export default class extends Controller {
         this.gameSessionIdValue !== "" &&
         ["resume", "list", "play"].includes(command)
       ) {
+        debugger;
         this.addToOutput(
           "You must exit the current game before starting a new one.",
           "error"
@@ -147,7 +149,6 @@ export default class extends Controller {
   handleLook() {
     console.log("Current game session id: ", this.gameSessionIdValue);
     this.addToOutput("You look around...", "response");
-    debugger;
     this.displayAreaInfo();
     this.displayExits();
     this.displayItems();
