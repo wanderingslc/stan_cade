@@ -13,7 +13,7 @@ class UseItemService
     result = @game_session.current_area.handle_item_use(
       item,
       parsed[:target_name],
-      @game_session
+      @game_session,
     )
 
     result

@@ -80,7 +80,16 @@ module Web
       if interaction
         interaction.execute(game_session)
       else
-        {message: "You can't use #{item.name} on #{target_name}."}
+        {
+          type: 'error',
+          message: "You can't use #{item.name} on #{target_name}.",
+          game_session_id: game_session.id,
+          current_area: {
+            name: game_session.current_area.name,
+            description: game_session.current_area.describe_area,
+            exits: game_session.current_area.exits
+          }
+        }
       end
     end
 
