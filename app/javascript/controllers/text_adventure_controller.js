@@ -19,7 +19,7 @@ export default class extends Controller {
   displayWelcomeMessage() {
     this.addToOutput(
       "Welcome to the Soork (SOrt Of Zork), based on Zork!",
-      "system"
+      "system",
     );
     this.addToOutput("Loading a list of adventures: ...", "system");
   }
@@ -89,7 +89,7 @@ export default class extends Controller {
     this.addToOutput(data.message, "response");
     this.addToOutput(
       `You are standing in the ${data.current_room.name}`,
-      "response"
+      "response",
     );
     this.addToOutput(data.current_room.description, "response");
 
@@ -138,7 +138,7 @@ export default class extends Controller {
         console.error("Error processing command:", error);
         this.addToOutput(
           "Error processing command. Please try again.",
-          "error"
+          "error",
         );
       });
   }
@@ -184,7 +184,7 @@ export default class extends Controller {
         });
         this.addToOutput(
           "Enter the number of the Soork you want to play: play <number>",
-          "system"
+          "system",
         );
       })
       .catch((error) => {
@@ -215,7 +215,7 @@ export default class extends Controller {
       this.addToOutput("  list - Show available Soorks", "system");
       this.addToOutput(
         "  play <number> - Start the adventure with that number",
-        "system"
+        "system",
       );
       this.addToOutput("  help - Show this help message", "system");
       this.addToOutput("  quit/exit - Exit the game", "system");
