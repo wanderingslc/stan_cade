@@ -25,7 +25,14 @@ class GameCommandService
     return list_soorks unless game_session
 
     result = ProcessCommandDispatcher.new(@command, game_session).process_command
+# 
+    if result.nil?
+      result = {}
+      result[:type] = "error"
+      result[:message] = "command not recognized"
+      result[:game_session_id] = game_session_id
 
+    end
     result
   end
 

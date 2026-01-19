@@ -35,6 +35,7 @@ export default class extends Controller {
       return;
     } else {
       console.log("WebSocket Response:", data);
+      console.log("history: ", this.historyValue);
       if (data.type === "list_soorks") {
         this.displaySoorksList(data.soorks);
       } else if (data.type === "current_state") {
@@ -91,6 +92,8 @@ export default class extends Controller {
   }
 
   handleCommand(e) {
+    console.log("Key pressed:", e.key);
+    console.log(this.historyValue);
     if (e.key === "Enter") {
       e.preventDefault();
       const trimmedInput = this.inputTarget.value.trim();
@@ -102,7 +105,7 @@ export default class extends Controller {
 
       const [command, ...args] = trimmedInput.split(" ");
       this.addToOutput(`> ${trimmedInput}`, "command");
-
+      this.historyValue = [...this.historyValue, trimmedInput];
       if (
         this.gameSessionIdValue === "" &&
         !this.constructor.ALLOWED_COMMANDS.includes(command)
