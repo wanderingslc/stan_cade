@@ -1,2 +1,52 @@
-<h1>Home#about</h1>
-<p>Find me in app/views/home/about.html.erb</p>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+      <div class="card shadow" data-controller="word-game">
+        <div class="card-body p-4">
+          <h1 class="card-title text-center mb-3">🔐 Word Guessing Game</h1>
+          <p class="text-center text-muted mb-4">Can you guess the secret word?</p>
+          <p class="text-center text-muted mb-4">Where do people guess you live that sounds close to where you actually live? </p>
+          <form data-action="submit->word-game#submit">
+            <div class="input-group mb-3">
+              <input 
+                type="text" 
+                class="form-control form-control-lg"
+                data-word-game-target="input"
+                placeholder="Enter your guess..."
+                autocomplete="off"
+              >
+              <button class="btn btn-primary btn-lg" type="submit">Guess</button>
+            </div>
+          </form>
+          <div data-word-game-target="message" class="message-area"></div>
+          <div data-word-game-target="secret" class="alert alert-warning d-none mt-3" role="alert">
+            <strong>🎉 Secret revealed:</strong> <span class="secret-text"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .message-area {
+    min-height: 40px;
+    text-align: center;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .message-area.success {
+    color: #198754;
+  }
+
+  .message-area.error {
+    color: #dc3545;
+  }
+
+  .secret-text {
+    font-family: monospace;
+    font-size: 1.1em;
+  }
+</style>

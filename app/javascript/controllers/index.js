@@ -12,3 +12,6 @@ application.register("soork", SoorkController)
 
 import TextAdventureController from "./text_adventure_controller"
 application.register("text-adventure", TextAdventureController)
+
+import WordGameController from "./word_game_controller"
+application.register("word-game", WordGameController)
